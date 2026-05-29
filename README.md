@@ -24,7 +24,7 @@ real-time data, AI that **acts**, and a design that respects your intelligence.
 
 <div align="center">
 
-<!-- Drop your images in docs/screenshots/ (you can use the dashboard/reports/chat captures). -->
+
 
 | Dashboard | Reports |
 |:---:|:---:|
@@ -36,8 +36,7 @@ real-time data, AI that **acts**, and a design that respects your intelligence.
 
 </div>
 
-> Screenshots live in `docs/screenshots/`. Add your own captures there — the
-> file names above are the placeholders the README expects.
+
 
 ---
 
