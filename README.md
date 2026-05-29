@@ -1,87 +1,183 @@
-# Ma Finance OS
+<div align="center">
 
-A cinematic, Japanese-minimalist personal finance operating system.
-Next.js 16 · React 19 · TypeScript · Firebase · Framer Motion · Recharts · Gemini AI.
+# 間 · Ma Finance OS
+
+### *Your financial reality, rendered.*
+
+A cinematic, Japanese-minimalist personal finance operating system —
+real-time data, AI that **acts**, and a design that respects your intelligence.
+
+`English` · [`Português`](#-português)
+
+![Next.js](https://img.shields.io/badge/Next.js_16-000000?style=for-the-badge&logo=nextdotjs&logoColor=white)
+![React](https://img.shields.io/badge/React_19-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
+![TypeScript](https://img.shields.io/badge/TypeScript_5-3178C6?style=for-the-badge&logo=typescript&logoColor=white)
+![Firebase](https://img.shields.io/badge/Firebase_11-FFCA28?style=for-the-badge&logo=firebase&logoColor=black)
+![Framer Motion](https://img.shields.io/badge/Framer_Motion-0055FF?style=for-the-badge&logo=framer&logoColor=white)
+![Gemini](https://img.shields.io/badge/Gemini_AI-8E75B2?style=for-the-badge&logo=googlegemini&logoColor=white)
+
+</div>
+
+---
+
+## Screenshots
+
+<div align="center">
+
+<!-- Drop your images in docs/screenshots/ (you can use the dashboard/reports/chat captures). -->
+
+| Dashboard | Reports |
+|:---:|:---:|
+| ![Dashboard](docs/screenshots/dashboard.png) | ![Reports](docs/screenshots/reports.png) |
+
+| AI Assistant | Budget |
+|:---:|:---:|
+| ![AI Assistant](docs/screenshots/ai-chat.png) | ![Budget](docs/screenshots/budget.png) |
+
+</div>
+
+> Screenshots live in `docs/screenshots/`. Add your own captures there — the
+> file names above are the placeholders the README expects.
+
+---
+
+## What is it?
+
+**Ma** (間 — the Japanese concept of negative space) is a personal finance app
+built like a premium operating system. Dark ink-night palette, smooth-scroll
+motion, and a serif-and-mono typographic system give it the feel of a product,
+not a dashboard template.
+
+Under the cinematic surface it's a complete finance tool: every number is real
+and live from Firestore, and the built-in AI assistant doesn't just answer
+questions — it can **create transactions, goals and budgets for you**, with a
+confirmation step.
+
+---
 
 ## Features
 
-- Dashboard with net worth, analytics, transactions, budgets, goals, investments
-- Multi-account tracking with transfers
-- Recurring transactions (with catch-up)
-- AI assistant (Gemini) that can answer questions **and** take actions
-- Live investment prices, CSV import/export, custom categories
-- Proactive insights, reports, PWA (installable), i18n (EN + PT-BR)
+**🏦 Core**
+- Net worth dashboard (computed automatically from cash + investments + goals)
+- Transactions: full CRUD, search/filter, pagination, bulk edit & delete, CSV import/export
+- Multi-account tracking (checking, savings, card, cash, investment) with transfers
+- Budgets with live progress bars and over-limit alerts
+- Goals with deposits, deadlines and progress
+- Recurring transactions with automatic catch-up
+
+**✦ AI assistant (Gemini)**
+- Answers questions about your real data — *"How much did I spend on dining this month?"*
+- **Takes actions** via function calling — *"Add a $50 groceries expense"* → proposes the action, you confirm, it's applied
+- Streams in the language you write in
+
+**📈 Insights & analytics**
+- Proactive insight strip (spending trends, budget warnings, bills due, goal pacing)
+- Reports: income vs expenses, savings-rate trend, net-worth history, category breakdown
+- Live investment prices (Yahoo Finance) with gain/loss tracking
+
+**✨ Experience**
+- Bilingual UI (English / Português) with reactive switching
+- Multi-currency with real FX conversion (frankfurter.app)
+- PWA — installable, offline-capable
+- Command palette (⌘K), keyboard shortcuts, light/dark themes, sound design
+- Cinematic onboarding wizard for new users
 
 ---
 
-## Local development
+## Tech stack
 
-```bash
-npm install
-cp .env.example .env.local   # then fill in the values
-npm run dev                  # http://localhost:3000
-```
-
----
-
-## Deploy to Vercel
-
-1. Push this repo to GitHub/GitLab.
-2. On [vercel.com](https://vercel.com) → **New Project** → import the repo.
-   Framework preset auto-detects **Next.js**. No build settings to change.
-3. Add the **Environment Variables** (Project → Settings → Environment Variables)
-   — copy the keys from `.env.example`:
-   - `GEMINI_API_KEY`
-   - `NEXT_PUBLIC_FIREBASE_API_KEY`
-   - `NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN`
-   - `NEXT_PUBLIC_FIREBASE_PROJECT_ID`
-   - `NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET`
-   - `NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID`
-   - `NEXT_PUBLIC_FIREBASE_APP_ID`
-4. **Deploy.**
-
-### After the first deploy
-
-- In the **Firebase console → Authentication → Settings → Authorized domains**,
-  add your Vercel domain (e.g. `your-app.vercel.app`) so Google sign-in works.
-
----
-
-## Firebase setup (one-time)
-
-Security rules live in this repo and deploy on the **free Spark plan**:
-
-```bash
-npm install -g firebase-tools
-firebase login
-firebase use --add          # pick your Firebase project, alias it "default"
-firebase deploy --only firestore:rules,storage
-```
-
-- `firestore.rules` — each user can only read/write their own data.
-- `storage.rules` — avatar uploads are owner-only, size/type checked.
-
-### Optional: scheduled recurring transactions (requires Blaze plan)
-
-The app already processes recurring transactions on login (with catch-up).
-For server-side processing independent of login, deploy the Cloud Function:
-
-```bash
-cd functions && npm install && cd ..
-firebase deploy --only functions
-```
-
-See `functions/README.md` for details.
+| Layer | Tech |
+|---|---|
+| Framework | Next.js 16 (App Router, Turbopack), React 19, TypeScript 5 |
+| Styling | SCSS Modules · design tokens + mixins · Framer Motion · Lenis smooth scroll |
+| Backend | Firebase — Auth, Firestore, Storage |
+| Charts | Recharts |
+| AI | Google Gemini (`@google/generative-ai`) with function calling |
+| Auth (APIs) | Firebase ID-token verification via `jose` (JWKS, no service account) |
 
 ---
 
 ## Architecture
 
-- `app/` — routes: `/` (landing), `/dashboard`, `/auth`, `/budget`, `/reports`, `/profile`, `/api/*`
-- `components/` — dashboard sections, UI, drawers, onboarding
-- `lib/` — Firestore service, types, translations, auth verification, categories
-- `hooks/` — Firestore subscriptions, currency, i18n (`useT`)
-- `contexts/` — Auth, Theme, Sound, Toast
-- `styles/` — SCSS tokens + mixins
+```
+app/            Routes: / (landing), /dashboard, /auth, /budget, /reports,
+                /profile, and /api/* (chat, quote, fx) — all token-protected
+components/     Dashboard sections, UI primitives, drawers, onboarding
+lib/            Firestore service, types, translations, categories, auth helpers
+hooks/          Firestore subscriptions, currency, i18n (useT), motion
+contexts/       Auth · Theme · Sound · Toast
+styles/         SCSS tokens + mixins
+```
 
-API routes are protected by Firebase ID token verification (`lib/verifyAuth.ts`).
+**Security** — Firestore & Storage rules lock every user to their own data
+(`firestore.rules`, `storage.rules`); API routes verify the caller's Firebase ID
+token (`lib/verifyAuth.ts`) so quotas can't be abused anonymously.
+
+---
+
+## Getting started
+
+```bash
+npm install
+cp .env.example .env.local   # fill in Firebase + Gemini keys
+npm run dev                  # http://localhost:3000
+```
+
+---
+
+## Deploy
+
+1. Push to GitHub and import into [Vercel](https://vercel.com) (Next.js auto-detected).
+2. Add the env vars from `.env.example` in **Project → Settings → Environment Variables**.
+3. Deploy.
+4. In **Firebase → Auth → Authorized domains**, add your Vercel domain.
+5. Ship the security rules (free Spark plan):
+
+```bash
+firebase deploy --only firestore:rules,storage
+```
+
+Optional server-side recurring processing (Blaze plan) lives in `functions/` — see `functions/README.md`.
+
+---
+---
+
+## 🇧🇷 Português
+
+**Ma** (間 — o conceito japonês de espaço negativo) é um app de finanças pessoais
+feito como um sistema operacional premium: paleta *ink-night*, movimento com
+scroll suave e tipografia serifada + mono que dão cara de produto, não de
+template de dashboard.
+
+Por baixo do visual cinematográfico, é uma ferramenta completa: todos os números
+são reais e ao vivo do Firestore, e o assistente de IA não só responde — ele
+**cria transações, metas e orçamentos pra você**, sempre com confirmação.
+
+**O que tem dentro**
+- Patrimônio calculado automaticamente (caixa + investimentos + metas)
+- Transações: CRUD completo, busca/filtro, edição e exclusão em massa, importar/exportar CSV
+- Multi-conta (corrente, poupança, cartão, dinheiro) com transferências
+- Orçamentos com barras de progresso e alertas; metas com depósitos e prazos
+- Recorrências com recuperação automática de períodos perdidos
+- **IA que age** (Gemini + function calling): *"Adiciona R$50 em mercado"* → propõe → você confirma
+- Insights proativos, relatórios, preços de investimento ao vivo
+- Bilíngue (EN/PT-BR), multi-moeda com conversão de câmbio real, PWA, command palette (⌘K), temas
+
+**Como rodar**
+```bash
+npm install
+cp .env.example .env.local   # preencha as chaves do Firebase + Gemini
+npm run dev
+```
+
+**Deploy** — suba no GitHub, importe na Vercel, configure as variáveis de
+ambiente do `.env.example`, adicione o domínio da Vercel no Firebase Auth e rode
+`firebase deploy --only firestore:rules,storage`.
+
+---
+
+<div align="center">
+
+*© 2026 · Built for clarity — a personal project / portfolio piece.*
+
+</div>
