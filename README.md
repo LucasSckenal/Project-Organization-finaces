@@ -20,11 +20,24 @@ real-time data, AI that **acts**, and a design that respects your intelligence.
 
 ---
 
-## Screenshots
+## Demo
 
 <div align="center">
 
+![Ma Finance OS demo](docs/screenshots/Demo.gif)
 
+</div>
+
+> The inline GIF above is a ~10s autoplay teaser. The full 19s capture lives at
+> `docs/screenshots/demo.mp4` (3 MB, full quality) — for a click-to-play video,
+> drag that file into the GitHub README editor and paste the asset URL it
+> generates in place of the GIF line.
+
+---
+
+## Screenshots
+
+<div align="center">
 
 | Dashboard | Reports |
 |:---:|:---:|
@@ -35,8 +48,6 @@ real-time data, AI that **acts**, and a design that respects your intelligence.
 | ![AI Assistant](docs/screenshots/ai-chat.png) | ![Budget](docs/screenshots/budget.png) |
 
 </div>
-
-
 
 ---
 
