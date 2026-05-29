@@ -1,0 +1,597 @@
+// ── Imports ───────────────────────────────────────────────────────────────────
+@use '../styles/tokens/colors' as *;
+@use '../styles/tokens/typography' as *;
+@use '../styles/tokens/spacing' as *;
+@use '../styles/mixins/animations' as *;
+@use '../styles/mixins/glass' as *;
+
+// ── Entrance animations ───────────────────────────────────────────────────────
+// Keyframes maFadeRise / maFadeIn are in app/globals.scss (global scope, no hash)
+.d1 { animation: maFadeRise 0.8s cubic-bezier(0.16,1,0.3,1) 0.10s both; }
+.d2 { animation: maFadeRise 0.8s cubic-bezier(0.16,1,0.3,1) 0.22s both; }
+.d3 { animation: maFadeRise 0.8s cubic-bezier(0.16,1,0.3,1) 0.36s both; }
+.d4 { animation: maFadeRise 0.8s cubic-bezier(0.16,1,0.3,1) 0.50s both; }
+.d5 { animation: maFadeIn   0.8s cubic-bezier(0.16,1,0.3,1) 0.64s both; }
+
+@media (prefers-reduced-motion: reduce) {
+  .d1,.d2,.d3,.d4,.d5 { animation: none; opacity: 1; transform: none; }
+}
+
+// ── Page ──────────────────────────────────────────────────────────────────────
+.page {
+  min-height: 100vh;
+  background: #1A1816;
+  color: #F2EFE9;
+  font-family: var(--font-sans, Inter, system-ui, sans-serif);
+
+  // Subtle radial glow in the center of the page
+  background-image:
+    radial-gradient(ellipse 80% 50% at 50% 0%, rgba(140,42,31,0.08) 0%, transparent 70%),
+    radial-gradient(ellipse 60% 40% at 50% 100%, rgba(26,24,22,0.6) 0%, transparent 100%);
+}
+
+// ── Nav ───────────────────────────────────────────────────────────────────────
+.nav {
+  position: fixed;
+  inset-block-start: 0;
+  inset-inline: 0;
+  z-index: 50;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 max(24px, 5vw);
+  background: rgba(26,24,22,0.80);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(242,239,233,0.06);
+}
+
+.navBrand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.navGlyph {
+  font-family: var(--font-serif, 'Noto Serif JP', serif);
+  font-size: 1.25rem;
+  color: #C26055;
+  line-height: 1;
+}
+
+.navName {
+  font-size: 0.8125rem;
+  font-weight: 300;
+  color: rgba(242,239,233,0.75);
+  letter-spacing: 0.02em;
+}
+
+.navActions {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.navLink {
+  font-size: 0.8125rem;
+  color: rgba(242,239,233,0.45);
+  letter-spacing: 0.04em;
+  @include transition(color, 180ms, $ease-settle);
+  &:hover { color: rgba(242,239,233,0.75); }
+}
+
+.navCta {
+  height: 30px;
+  padding: 0 14px;
+  border-radius: 4px;
+  border: 1px solid rgba(242,239,233,0.12);
+  background: rgba(242,239,233,0.05);
+  font-size: 0.75rem;
+  color: rgba(242,239,233,0.75);
+  letter-spacing: 0.05em;
+  display: inline-flex;
+  align-items: center;
+  @include transition(all, 180ms, $ease-settle);
+  &:hover {
+    background: rgba(242,239,233,0.09);
+    border-color: rgba(242,239,233,0.20);
+    color: #F2EFE9;
+  }
+}
+
+// ── Hero ──────────────────────────────────────────────────────────────────────
+// CSS Grid place-items: center is the most reliable centering method.
+// height: 100dvh prevents iOS address-bar issues.
+.hero {
+  height: 100dvh;
+  display: grid;
+  place-items: center;
+  // Offset for fixed nav: push the grid area down by 32px
+  padding-top: 64px;
+  padding-inline: max(24px, 5vw);
+  position: relative;
+}
+
+.heroContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 0;
+  max-width: 600px;
+  width: 100%;
+}
+
+// ── Hero typography ───────────────────────────────────────────────────────────
+.eyebrow {
+  font-size: 0.6875rem;
+  letter-spacing: 0.20em;
+  text-transform: uppercase;
+  color: rgba(242,239,233,0.35);
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  &::before, &::after {
+    content: '';
+    display: inline-block;
+    width: 18px;
+    height: 1px;
+    background: currentColor;
+    opacity: 0.6;
+  }
+}
+
+.headline {
+  font-family: var(--font-serif, 'Noto Serif JP', serif);
+  // Conservative clamp: never exceeds 56px to stay within viewport
+  font-size: clamp(2rem, 4.2vw, 3.5rem);
+  font-weight: 100;
+  line-height: 1.12;
+  letter-spacing: -0.02em;
+  color: #F2EFE9;
+  margin-bottom: 20px;
+
+  em {
+    font-style: italic;
+    color: rgba(242,239,233,0.65);
+  }
+}
+
+.lead {
+  font-size: clamp(0.875rem, 1.5vw, 1rem);
+  color: rgba(242,239,233,0.40);
+  line-height: 1.65;
+  font-weight: 300;
+  margin-bottom: 32px;
+}
+
+.ctas {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.fine {
+  font-size: 0.6875rem;
+  color: rgba(242,239,233,0.25);
+  letter-spacing: 0.06em;
+}
+
+// ── Scroll hint ───────────────────────────────────────────────────────────────
+.scrollHint {
+  position: absolute;
+  bottom: 32px;
+  left: 50%;
+  // translateX in keyframe, no transform here to avoid conflict
+  transform: translateX(-50%);
+  font-size: 0.875rem;
+  color: rgba(242,239,233,0.35);
+  text-decoration: none;
+  line-height: 1;
+  // Starts after hero animations finish
+  animation: maScrollBounce 2.4s cubic-bezier(0.37,0,0.63,1) 1.6s infinite;
+  &:hover { color: rgba(242,239,233,0.65); }
+}
+
+// ── Buttons ───────────────────────────────────────────────────────────────────
+.btnPrimary {
+  height: 42px;
+  padding: 0 28px;
+  border-radius: 4px;
+  background: #F2EFE9;
+  color: #1A1816;
+  font-size: 0.8125rem;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  display: inline-flex;
+  align-items: center;
+  @include transition(all, 200ms, $ease-settle);
+  &:hover { background: rgba(242,239,233,0.88); transform: translateY(-1px); }
+}
+
+.btnGhost {
+  height: 42px;
+  padding: 0 20px;
+  border-radius: 4px;
+  border: 1px solid rgba(242,239,233,0.12);
+  background: transparent;
+  color: rgba(242,239,233,0.60);
+  font-size: 0.8125rem;
+  letter-spacing: 0.02em;
+  display: inline-flex;
+  align-items: center;
+  @include transition(all, 200ms, $ease-settle);
+  &:hover {
+    background: rgba(242,239,233,0.06);
+    border-color: rgba(242,239,233,0.22);
+    color: rgba(242,239,233,0.88);
+  }
+}
+
+// ── Sections ──────────────────────────────────────────────────────────────────
+.section {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 96px max(24px, 5vw);
+  border-top: 1px solid rgba(242,239,233,0.05);
+}
+
+// Section head — starts hidden, reveals when Reveal adds data-vis
+.sectionHead {
+  text-align: center;
+  margin-bottom: 56px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+
+  // Children start invisible
+  .sectionEyebrow,
+  .sectionH2,
+  .sectionNote {
+    opacity: 0;
+    transform: translateY(14px);
+    transition:
+      opacity  0.7s cubic-bezier(0.16,1,0.3,1),
+      transform 0.7s cubic-bezier(0.16,1,0.3,1);
+  }
+  .sectionH2   { transition-delay: 0.08s; }
+  .sectionNote { transition-delay: 0.14s; }
+
+  // When in view: reveal all
+  &[data-vis] {
+    .sectionEyebrow,
+    .sectionH2,
+    .sectionNote { opacity: 1; transform: none; }
+  }
+}
+
+.sectionEyebrow {
+  font-size: 0.6875rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(242,239,233,0.30);
+}
+
+.sectionH2 {
+  font-family: var(--font-serif, 'Noto Serif JP', serif);
+  font-size: clamp(1.6rem, 3vw, 2.4rem);
+  font-weight: 100;
+  color: #F2EFE9;
+  line-height: 1.2;
+  letter-spacing: -0.015em;
+}
+
+.sectionNote {
+  font-size: 0.875rem;
+  color: rgba(242,239,233,0.35);
+  font-weight: 300;
+}
+
+// ── Feature grid ──────────────────────────────────────────────────────────────
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+
+  // Cards start hidden; revealed when grid has data-vis
+  .card {
+    opacity: 0;
+    transform: translateY(18px);
+    transition:
+      opacity   0.65s cubic-bezier(0.16,1,0.3,1),
+      transform 0.65s cubic-bezier(0.16,1,0.3,1),
+      border-color 0.24s ease;
+  }
+
+  @for $i from 1 through 6 {
+    .card:nth-child(#{$i}) { transition-delay: #{($i - 1) * 0.07}s; }
+  }
+
+  &[data-vis] .card { opacity: 1; transform: none; }
+}
+
+.card {
+  @include glass-card;
+  padding: 28px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  &:hover {
+    transform: translateY(-2px) !important;
+    border-color: rgba(242,239,233,0.10);
+  }
+}
+
+.cardIcon {
+  font-size: 1.1rem;
+  color: #C26055;
+  line-height: 1;
+}
+
+.cardTitle {
+  font-size: 0.875rem;
+  font-weight: 400;
+  color: rgba(242,239,233,0.88);
+  letter-spacing: 0.01em;
+}
+
+.cardDesc {
+  font-size: 0.8125rem;
+  color: rgba(242,239,233,0.38);
+  line-height: 1.65;
+  font-weight: 300;
+}
+
+// ── Pricing ───────────────────────────────────────────────────────────────────
+.plans {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  max-width: 700px;
+  margin: 0 auto;
+
+  .plan {
+    opacity: 0;
+    transform: translateY(18px);
+    transition:
+      opacity   0.65s cubic-bezier(0.16,1,0.3,1),
+      transform 0.65s cubic-bezier(0.16,1,0.3,1);
+    &:nth-child(2) { transition-delay: 0.10s; }
+  }
+
+  &[data-vis] .plan { opacity: 1; transform: none; }
+}
+
+.plan {
+  @include glass-card;
+  padding: 28px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  position: relative;
+}
+
+.planPro {
+  border-color: rgba(194,96,85,0.22);
+  background: rgba(140,42,31,0.05);
+}
+
+.planBadge {
+  position: absolute;
+  top: -10px;
+  right: 20px;
+  font-size: 0.625rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #C26055;
+  background: rgba(140,42,31,0.18);
+  border: 1px solid rgba(194,96,85,0.28);
+  border-radius: 999px;
+  padding: 2px 10px;
+}
+
+.planHeader {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+}
+
+.planName {
+  font-size: 0.6875rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(242,239,233,0.35);
+}
+
+.planPrice {
+  font-size: 2rem;
+  font-weight: 100;
+  color: #F2EFE9;
+  font-family: var(--font-sans, Inter, sans-serif);
+  letter-spacing: -0.03em;
+  line-height: 1;
+}
+
+.planPer {
+  font-size: 0.75rem;
+  color: rgba(242,239,233,0.35);
+  letter-spacing: 0;
+  margin-left: 2px;
+}
+
+.planItems {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex: 1;
+}
+
+.planItem {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.8125rem;
+  color: rgba(242,239,233,0.60);
+  font-weight: 300;
+  letter-spacing: 0.01em;
+}
+
+.checkmark {
+  font-size: 0.6875rem;
+  color: rgba(242,239,233,0.30);
+  flex-shrink: 0;
+  width: 14px;
+}
+
+.checkPro {
+  color: #7BAF8E;
+}
+
+.planBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 36px;
+  border-radius: 4px;
+  border: 1px solid rgba(242,239,233,0.10);
+  background: transparent;
+  font-size: 0.75rem;
+  color: rgba(242,239,233,0.55);
+  letter-spacing: 0.06em;
+  @include transition(all, 180ms, $ease-settle);
+  &:hover {
+    background: rgba(242,239,233,0.06);
+    border-color: rgba(242,239,233,0.18);
+    color: rgba(242,239,233,0.88);
+  }
+}
+
+.planBtnPro {
+  border-color: rgba(194,96,85,0.35);
+  background: rgba(140,42,31,0.10);
+  color: #C26055;
+  &:hover {
+    background: rgba(140,42,31,0.18);
+    border-color: rgba(194,96,85,0.55);
+    color: #d47a6e;
+  }
+}
+
+// ── Footer CTA ────────────────────────────────────────────────────────────────
+.footerCta {
+  border-top: 1px solid rgba(242,239,233,0.05);
+  padding: 96px max(24px, 5vw);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  text-align: center;
+
+  // Start hidden, reveal on scroll
+  .footerGlyph,
+  .footerCtaTitle,
+  .btnPrimary {
+    opacity: 0;
+    transform: translateY(14px);
+    transition:
+      opacity   0.8s cubic-bezier(0.16,1,0.3,1),
+      transform 0.8s cubic-bezier(0.16,1,0.3,1);
+  }
+  .footerCtaTitle { transition-delay: 0.10s; }
+  .btnPrimary     { transition-delay: 0.20s; }
+
+  &[data-vis] {
+    .footerGlyph,
+    .footerCtaTitle,
+    .btnPrimary { opacity: 1; transform: none; }
+  }
+}
+
+.footerGlyph {
+  font-family: var(--font-serif, 'Noto Serif JP', serif);
+  font-size: clamp(4rem, 10vw, 8rem);
+  font-weight: 100;
+  color: rgba(242,239,233,0.06);
+  line-height: 1;
+  letter-spacing: -0.04em;
+  margin-bottom: -8px;
+}
+
+.footerCtaTitle {
+  font-family: var(--font-serif, 'Noto Serif JP', serif);
+  font-size: clamp(1.5rem, 3vw, 2.2rem);
+  font-weight: 100;
+  color: #F2EFE9;
+  letter-spacing: -0.015em;
+}
+
+// ── Footer ────────────────────────────────────────────────────────────────────
+.footer {
+  border-top: 1px solid rgba(242,239,233,0.05);
+  padding: 20px max(24px, 5vw);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.footerLeft {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.footerBrandGlyph {
+  font-family: var(--font-serif, 'Noto Serif JP', serif);
+  font-size: 0.875rem;
+  color: #C26055;
+  opacity: 0.6;
+}
+
+.footerBrandName {
+  font-size: 0.75rem;
+  color: rgba(242,239,233,0.30);
+  font-weight: 300;
+}
+
+.footerCopy {
+  font-size: 0.6875rem;
+  color: rgba(242,239,233,0.20);
+  letter-spacing: 0.04em;
+}
+
+// ── Responsive ────────────────────────────────────────────────────────────────
+@media (max-width: 1023px) {
+  .grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 640px) {
+  .navName { display: none; }
+
+  .hero { padding-inline: 20px; }
+
+  .headline { font-size: clamp(1.75rem, 8vw, 2.5rem); }
+
+  .ctas { flex-direction: column; width: 100%; }
+  .btnPrimary, .btnGhost { width: 100%; justify-content: center; }
+
+  .grid  { grid-template-columns: 1fr; }
+  .plans { grid-template-columns: 1fr; }
+
+  .section { padding: 64px 20px; }
+  .footerCta { padding: 64px 20px; }
+
+  .footer {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 20px;
+  }
+}

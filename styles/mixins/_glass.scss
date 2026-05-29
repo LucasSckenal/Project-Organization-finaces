@@ -1,0 +1,76 @@
+// ─── Glassmorphism Mixins ─────────────────────────────────────────────────────
+// Tuned to portfolio ink-night palette
+
+@use '../tokens/colors' as *;
+@use '../tokens/spacing' as *;
+
+@mixin glass($blur: 20px, $bg: var(--glass-bg), $border: var(--glass-border)) {
+  background: $bg;
+  backdrop-filter: blur($blur) saturate(130%);
+  -webkit-backdrop-filter: blur($blur) saturate(130%);
+  border: 1px solid $border;
+}
+
+@mixin glass-elevated {
+  background: var(--glass-bg-elevated, var(--glass-bg));
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(24px) saturate(130%);
+  -webkit-backdrop-filter: blur(24px) saturate(130%);
+  box-shadow:
+    0 1px 0 0 var(--glass-shine, rgba(242, 239, 233, 0.04)) inset,
+    0 32px 64px -16px rgba(0, 0, 0, 0.40),
+    0 8px 32px -8px rgba(0, 0, 0, 0.25);
+}
+
+@mixin glass-card {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(20px) saturate(140%);
+  -webkit-backdrop-filter: blur(20px) saturate(140%);
+  border-radius: $radius-md;
+  // Layered shadows — depth in dark, subtle in light
+  box-shadow:
+    0 0 0 1px var(--glass-shine) inset,
+    0 1px 0 0 var(--glass-top-shine, rgba(255,255,255,0.03)) inset,
+    0 24px 48px -12px var(--card-shadow-far, rgba(0,0,0,0.55)),
+    0 8px 20px -8px var(--card-shadow-near, rgba(0,0,0,0.35));
+}
+
+// Top-light shine (topmost 1px highlight)
+@mixin glass-shine {
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: linear-gradient(
+      135deg,
+      rgba(242, 239, 233, 0.04) 0%,
+      transparent 50%
+    );
+    pointer-events: none;
+  }
+}
+
+@mixin glow-accent($intensity: 0.12) {
+  box-shadow: 0 0 60px 0 rgba(140, 42, 31, $intensity);
+}
+
+@mixin glow-night($intensity: 0.10) {
+  box-shadow: 0 0 40px 0 rgba(232, 154, 79, $intensity);
+}
+
+// Cinematic noise grain overlay
+@mixin noise-texture {
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+    background-size: 256px 256px;
+    opacity: 0.35;
+    pointer-events: none;
+    mix-blend-mode: overlay;
+  }
+}

@@ -1,0 +1,89 @@
+@use '../../../styles/tokens/colors' as *;
+@use '../../../styles/tokens/typography' as *;
+@use '../../../styles/tokens/spacing' as *;
+@use '../../../styles/mixins/animations' as *;
+
+.strip {
+  padding: 0 $space-8 $space-6;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+  margin-bottom: $space-3;
+}
+
+.sparkle {
+  font-size: 11px;
+  color: $accent-text;
+  line-height: 1;
+}
+
+.headerLabel {
+  font-size: $t-xs;
+  color: $on-dark-faded;
+  letter-spacing: $track-mark;
+  text-transform: uppercase;
+}
+
+.track {
+  display: flex;
+  gap: $space-3;
+  overflow-x: auto;
+  padding-bottom: $space-2;
+  scrollbar-width: none;
+  &::-webkit-scrollbar { display: none; }
+}
+
+.card {
+  display: flex;
+  align-items: center;
+  gap: $space-2_5;
+  flex-shrink: 0;
+  max-width: 340px;
+  padding: $space-3 $space-4;
+  border-radius: $radius-md;
+  border: 1px solid $line-soft;
+  background: rgba(255, 249, 240, 0.02);
+  @include transition(all, 200ms, $ease-settle);
+
+  &:hover { border-color: $line; background: rgba(255, 249, 240, 0.04); }
+}
+
+.cardIcon {
+  font-size: 13px;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.cardText {
+  font-size: $t-xs;
+  color: $on-dark-soft;
+  letter-spacing: 0.01em;
+  line-height: 1.4;
+  white-space: nowrap;
+}
+
+// ── Severity accents ──────────────────────────────────────────────────────────
+.positive {
+  border-color: rgba(74, 124, 89, 0.25);
+  .cardIcon { color: $positive-text; }
+}
+
+.warning {
+  border-color: rgba(232, 154, 79, 0.25);
+  background: rgba(232, 154, 79, 0.05);
+  .cardIcon { color: $accent-night-text; }
+}
+
+.info {
+  .cardIcon { color: $on-dark-faded; }
+}
+
+// ── Mobile ────────────────────────────────────────────────────────────────────
+@media (max-width: 767px) {
+  .strip { padding: 0 $space-5 $space-5; }
+  .cardText { white-space: normal; }
+  .card { max-width: 280px; }
+}

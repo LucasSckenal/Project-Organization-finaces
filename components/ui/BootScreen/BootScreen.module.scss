@@ -1,0 +1,233 @@
+// ── Boot Screen — cinematic OS startup ────────────────────────────────────────
+
+@keyframes scanlines-scroll {
+  from { background-position: 0 0; }
+  to   { background-position: 0 4px; }
+}
+
+@keyframes cursor-blink {
+  0%, 48%  { opacity: 1; }
+  50%, 98% { opacity: 0; }
+  100%     { opacity: 1; }
+}
+
+@keyframes dot-pulse {
+  0%, 100% { opacity: 0.4; transform: scale(0.9); }
+  50%      { opacity: 1;   transform: scale(1.15); }
+}
+
+@keyframes glow-breathe {
+  0%, 100% { opacity: 0.18; transform: scale(1); }
+  50%      { opacity: 0.28; transform: scale(1.06); }
+}
+
+// ── Full-screen overlay ───────────────────────────────────────────────────────
+.screen {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  background: #050403;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+// CRT scanlines
+.scanlines {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent,
+    transparent 3px,
+    rgba(0, 0, 0, 0.18) 3px,
+    rgba(0, 0, 0, 0.18) 4px
+  );
+  animation: scanlines-scroll 0.08s linear infinite;
+  mix-blend-mode: overlay;
+  opacity: 0.6;
+}
+
+// Ambient glow behind the kanji
+.glow {
+  position: absolute;
+  width: 500px;
+  height: 500px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(140, 42, 31, 0.20) 0%,
+    rgba(194, 96, 85, 0.06) 50%,
+    transparent 70%
+  );
+  animation: glow-breathe 3s ease-in-out infinite;
+  pointer-events: none;
+}
+
+// ── Center content ────────────────────────────────────────────────────────────
+.center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 28px;
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 480px;
+  padding: 0 24px;
+}
+
+// ── Kanji ─────────────────────────────────────────────────────────────────────
+.kanji {
+  font-family: var(--font-serif, 'Noto Serif JP', serif);
+  font-size: clamp(80px, 14vw, 120px);
+  font-weight: 300;
+  line-height: 1;
+  color: rgba(242, 239, 233, 0.92);
+  letter-spacing: -0.04em;
+  text-shadow:
+    0 0 40px rgba(194, 96, 85, 0.35),
+    0 0 80px rgba(140, 42, 31, 0.20);
+  user-select: none;
+}
+
+// ── Title block ───────────────────────────────────────────────────────────────
+.titleBlock {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  text-align: center;
+}
+
+.titleOs {
+  font-family: var(--font-mono, monospace);
+  font-size: clamp(14px, 3vw, 18px);
+  font-weight: 400;
+  color: rgba(242, 239, 233, 0.90);
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.cursor {
+  animation: cursor-blink 1s step-start infinite;
+  color: #C26055;
+  line-height: 1;
+  margin-left: 1px;
+}
+
+.titleBuild {
+  font-family: var(--font-mono, monospace);
+  font-size: 10px;
+  color: rgba(242, 239, 233, 0.28);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+// ── Load block ────────────────────────────────────────────────────────────────
+.loadBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+  max-width: 340px;
+}
+
+// Progress track
+.track {
+  height: 2px;
+  background: rgba(242, 239, 233, 0.07);
+  border-radius: 99px;
+  overflow: visible;
+  position: relative;
+}
+
+.fill {
+  height: 100%;
+  background: linear-gradient(
+    to right,
+    rgba(140, 42, 31, 0.6),
+    #C26055
+  );
+  border-radius: 99px;
+  transition: width 80ms linear;
+  position: relative;
+}
+
+.fillDone {
+  background: linear-gradient(to right, rgba(74, 124, 89, 0.7), #7ab990);
+}
+
+// Glow at the tip of the progress bar
+.trackGlow {
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #C26055;
+  box-shadow: 0 0 10px 3px rgba(194, 96, 85, 0.5);
+  pointer-events: none;
+  transition: left 80ms linear;
+}
+
+// Status row
+.status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.statusDot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: rgba(194, 96, 85, 0.7);
+  flex-shrink: 0;
+  animation: dot-pulse 1.2s ease-in-out infinite;
+}
+
+.statusDotReady {
+  background: rgba(74, 124, 89, 0.8);
+  animation: none;
+  opacity: 1;
+}
+
+.statusText {
+  font-family: var(--font-mono, monospace);
+  font-size: 11px;
+  color: rgba(242, 239, 233, 0.38);
+  letter-spacing: 0.06em;
+  flex: 1;
+  min-width: 0;
+}
+
+.progressNum {
+  font-family: var(--font-mono, monospace);
+  font-size: 10px;
+  color: rgba(242, 239, 233, 0.22);
+  letter-spacing: 0.06em;
+  flex-shrink: 0;
+  font-variant-numeric: tabular-nums;
+}
+
+// ── Corner watermarks ─────────────────────────────────────────────────────────
+.cornerTL,
+.cornerBR {
+  position: absolute;
+  font-family: var(--font-mono, monospace);
+  font-size: 9px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(242, 239, 233, 0.10);
+  user-select: none;
+}
+
+.cornerTL { top: 20px;    left: 24px;  }
+.cornerBR { bottom: 20px; right: 24px; }

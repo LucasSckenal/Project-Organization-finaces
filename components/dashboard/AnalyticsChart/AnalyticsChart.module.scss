@@ -1,0 +1,312 @@
+﻿@use '../../../styles/tokens/colors' as *;
+@use '../../../styles/tokens/typography' as *;
+@use '../../../styles/tokens/spacing' as *;
+@use '../../../styles/mixins/glass' as *;
+@use '../../../styles/mixins/animations' as *;
+
+.section {
+  padding: $space-8;
+  padding-top: 0;
+}
+
+.header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-bottom: $space-8;
+}
+
+.titleArea {
+  display: flex;
+  flex-direction: column;
+  gap: $space-2;
+}
+
+.sectionTag {
+  font-size: $t-xs;
+  color: $on-dark-faded;
+  letter-spacing: $track-mark;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+
+  &::before {
+    content: '';
+    display: inline-block;
+    width: 16px;
+    height: 1px;
+    background: currentColor;
+  }
+}
+
+.sectionTitle {
+  font-size: $t-lg;
+  font-weight: $w-thin;
+  color: $on-dark;
+  letter-spacing: $track-snug;
+  line-height: $lh-tight;
+}
+
+.headerRight {
+  display: flex;
+  align-items: center;
+  gap: $space-3;
+}
+
+.viewToggle {
+  display: flex;
+  gap: 2px;
+  background: rgba(255, 249, 240, 0.03);
+  border: 1px solid $line-soft;
+  border-radius: $radius-sm;
+  padding: 2px;
+}
+
+.viewBtn {
+  height: 26px;
+  padding: 0 $space-3;
+  border-radius: calc(#{$radius-sm} - 2px);
+  font-size: $t-xs;
+  color: $on-dark-faded;
+  letter-spacing: 0;
+  cursor: pointer;
+  @include transition(all, 160ms, $ease-settle);
+
+  &:hover { color: $on-dark-soft; }
+}
+
+.viewBtnActive {
+  background: rgba(255, 249, 240, 0.07);
+  color: $on-dark-soft;
+}
+
+.timeFilters {
+  display: flex;
+  gap: $space-1;
+}
+
+.filterBtn {
+  font-size: $t-xs;
+  color: $on-dark-faded;
+  padding: $space-1_5 $space-3;
+  border-radius: $radius-full;
+  border: 1px solid transparent;
+  letter-spacing: $track-wide;
+  @include transition(all, $duration-normal, $ease-expo-out);
+
+  &:hover {
+    color: $on-dark-soft;
+    background: rgba(255, 249, 240, 0.04);
+  }
+}
+
+.filterBtnActive {
+  color: $on-dark;
+  border-color: $line;
+  background: rgba(255, 249, 240, 0.06);
+}
+
+// ── Chart card ─────────────────────────────────────────────────────────────────
+.chartCard {
+  @include glass-card;
+  padding: $space-6;
+  position: relative;
+  overflow: hidden;
+}
+
+.chartHeader {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: $space-4;
+  margin-bottom: $space-6;
+  padding-bottom: $space-6;
+  border-bottom: 1px solid $line-soft;
+}
+
+.chartStat {
+  display: flex;
+  flex-direction: column;
+  gap: $space-1;
+}
+
+.chartStatLabel {
+  font-size: $t-xs;
+  color: $on-dark-faded;
+  text-transform: uppercase;
+  letter-spacing: $track-mark;
+}
+
+.chartStatValue {
+  font-size: $t-md;
+  font-weight: $w-thin;
+  color: $on-dark;
+  font-family: $font-mono;
+  letter-spacing: $track-snug;
+}
+
+.chartStatDelta {
+  font-size: $t-xs;
+  font-weight: $w-light;
+}
+
+.positive { color: $positive-text; }
+.negative { color: $negative-text; }
+
+.chartWrapper {
+  height: 220px;
+  position: relative;
+
+  // Custom recharts overrides — via global selector
+  :global(.recharts-cartesian-grid-horizontal line) {
+    stroke: rgba(255, 249, 240, 0.04);
+  }
+  :global(.recharts-cartesian-grid-vertical line) {
+    display: none;
+  }
+  :global(.recharts-tooltip-wrapper) {
+    outline: none;
+  }
+  :global(.recharts-xAxis .recharts-text) {
+    fill: #{$on-dark-faded};
+    font-size: 11px;
+    letter-spacing: 0.05em;
+  }
+  :global(.recharts-yAxis .recharts-text) {
+    fill: #{$on-dark-faded};
+    font-size: 10px;
+  }
+}
+
+// ── Donut chart ────────────────────────────────────────────────────────────────
+.donutSection {
+  margin-top: $space-6;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: $space-4;
+}
+
+.donutCard {
+  @include glass-card;
+  padding: $space-5;
+}
+
+.donutTitle {
+  font-size: $t-xs;
+  color: $on-dark-faded;
+  text-transform: uppercase;
+  letter-spacing: $track-mark;
+  margin-bottom: $space-4;
+}
+
+.donutWrapper {
+  height: 160px;
+  position: relative;
+}
+
+.categoryList {
+  margin-top: $space-4;
+  display: flex;
+  flex-direction: column;
+  gap: $space-2;
+}
+
+.categoryItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: $space-3;
+}
+
+.categoryDot {
+  width: 6px;
+  height: 6px;
+  border-radius: $radius-full;
+  flex-shrink: 0;
+}
+
+.categoryName {
+  flex: 1;
+  font-size: $t-xs;
+  color: $on-dark-soft;
+  letter-spacing: 0.01em;
+}
+
+.categoryPercent {
+  font-size: $t-xs;
+  color: $on-dark-faded;
+  font-family: $font-mono;
+  letter-spacing: 0.02em;
+}
+
+// ── Mobile ────────────────────────────────────────────────────────────────────
+@media (max-width: 767px) {
+  .section {
+    padding: $space-5;
+    padding-top: 0;
+  }
+
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: $space-3;
+    margin-bottom: $space-6;
+  }
+
+  .chartHeader {
+    grid-template-columns: 1fr 1fr;
+    gap: $space-3;
+  }
+
+  .donutSection {
+    grid-template-columns: 1fr;
+  }
+
+  .chartCard {
+    padding: $space-4;
+  }
+}
+
+// Custom tooltip
+.tooltip {
+  @include glass-elevated;
+  border-radius: $radius-md;
+  padding: $space-3 $space-4;
+  pointer-events: none;
+}
+
+.tooltipLabel {
+  font-size: $t-xs;
+  color: $on-dark-faded;
+  margin-bottom: $space-1;
+  letter-spacing: $track-wide;
+}
+
+.tooltipRow {
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+  margin-top: 3px;
+}
+
+.tooltipDot {
+  width: 6px;
+  height: 6px;
+  border-radius: $radius-full;
+  flex-shrink: 0;
+  opacity: 0.8;
+}
+
+.tooltipName {
+  font-size: $t-xs;
+  color: $on-dark-faded;
+  letter-spacing: 0.02em;
+  flex: 1;
+}
+
+.tooltipValue {
+  font-size: $t-xs;
+  color: $on-dark;
+  font-family: $font-mono;
+  letter-spacing: 0.02em;
+}

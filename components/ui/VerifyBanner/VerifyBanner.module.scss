@@ -1,0 +1,69 @@
+@use '../../../styles/tokens/colors' as *;
+@use '../../../styles/tokens/typography' as *;
+@use '../../../styles/tokens/spacing' as *;
+@use '../../../styles/mixins/animations' as *;
+
+.banner {
+  display: flex;
+  align-items: center;
+  gap: $space-3;
+  padding: $space-2_5 $space-5;
+  background: rgba(232, 154, 79, 0.10);
+  border-bottom: 1px solid rgba(232, 154, 79, 0.20);
+  animation: maFadeIn 0.4s $ease-settle both;
+}
+
+.icon {
+  font-size: 13px;
+  color: $accent-night-text;
+  flex-shrink: 0;
+}
+
+.text {
+  flex: 1;
+  font-size: $t-xs;
+  color: $on-dark-soft;
+  letter-spacing: 0.01em;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+  flex-shrink: 0;
+}
+
+.resendBtn {
+  height: 26px;
+  padding: 0 $space-3;
+  border-radius: $radius-sm;
+  border: 1px solid rgba(232, 154, 79, 0.30);
+  background: rgba(232, 154, 79, 0.08);
+  font-size: $t-xs;
+  color: $accent-night-text;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  @include transition(all, 160ms, $ease-settle);
+
+  &:hover:not(:disabled) { background: rgba(232, 154, 79, 0.16); }
+  &:disabled { opacity: 0.6; cursor: default; }
+}
+
+.dismissBtn {
+  width: 24px;
+  height: 24px;
+  border-radius: $radius-sm;
+  border: 1px solid transparent;
+  background: transparent;
+  color: $on-dark-faded;
+  font-size: 10px;
+  cursor: pointer;
+  @include transition(all, 160ms, $ease-settle);
+
+  &:hover { color: $on-dark-soft; background: rgba(255, 249, 240, 0.06); }
+}
+
+@media (max-width: 640px) {
+  .text { font-size: 11px; }
+  .banner { padding: $space-2 $space-4; }
+}

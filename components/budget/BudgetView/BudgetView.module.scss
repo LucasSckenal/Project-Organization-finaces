@@ -1,0 +1,344 @@
+@use '../../../styles/tokens/colors' as *;
+@use '../../../styles/tokens/typography' as *;
+@use '../../../styles/tokens/spacing' as *;
+@use '../../../styles/mixins/animations' as *;
+@use '../../../styles/mixins/glass' as *;
+
+// ── Page wrapper ──────────────────────────────────────────────────────────────
+.page {
+  display: flex;
+  flex-direction: column;
+  min-height: calc(100vh - #{$topbar-height});
+  padding: 0 $space-8 $space-10;
+  overflow-y: auto;
+}
+
+// ── Header ────────────────────────────────────────────────────────────────────
+.pageHeader {
+  display: flex;
+  flex-direction: column;
+  gap: $space-1_5;
+  padding: $space-6 0 $space-5;
+  flex-shrink: 0;
+}
+
+.pageTag {
+  font-size: $t-xs;
+  color: $on-dark-faded;
+  letter-spacing: $track-mark;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+
+  &::before {
+    content: '';
+    display: inline-block;
+    width: 16px;
+    height: 1px;
+    background: currentColor;
+  }
+}
+
+.pageTitle {
+  font-size: $t-xl;
+  font-weight: $w-thin;
+  color: $on-dark;
+  letter-spacing: $track-snug;
+  line-height: $lh-tight;
+}
+
+.pageMonth {
+  font-size: $t-xs;
+  color: $on-dark-faded;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+// ── Summary row ───────────────────────────────────────────────────────────────
+.summaryRow {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: $space-4;
+  margin-bottom: $space-6;
+}
+
+.summaryCard {
+  @include glass-card;
+  padding: $space-5 $space-6;
+  display: flex;
+  flex-direction: column;
+  gap: $space-2;
+}
+
+.summaryLabel {
+  font-size: $t-xs;
+  color: $on-dark-faded;
+  text-transform: uppercase;
+  letter-spacing: $track-mark;
+}
+
+.summaryValue {
+  font-size: $t-xl;
+  font-weight: $w-thin;
+  color: $on-dark;
+  letter-spacing: -0.02em;
+  font-family: $font-mono;
+  font-variant-numeric: tabular-nums;
+}
+
+.valueDanger  { color: $negative-text !important; }
+.valuePositive { color: $positive-text !important; }
+
+.summaryBadgeOver {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px $space-2;
+  border-radius: $radius-full;
+  font-size: 10px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  background: rgba(139, 58, 58, 0.12);
+  border: 1px solid rgba(139, 58, 58, 0.25);
+  color: $negative-text;
+  width: fit-content;
+}
+
+// ── Grid ──────────────────────────────────────────────────────────────────────
+.gridWrapper { flex: 1; }
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: $space-4;
+}
+
+// ── Category card ─────────────────────────────────────────────────────────────
+.card {
+  @include glass-card;
+  padding: $space-5;
+  display: flex;
+  flex-direction: column;
+  gap: $space-3;
+  @include transition(border-color, 200ms, $ease-settle);
+
+  &:hover .editBtn { opacity: 1; }
+}
+
+.cardOver {
+  border-color: rgba(139, 58, 58, 0.3);
+  background: rgba(139, 58, 58, 0.04);
+}
+
+.cardWarn {
+  border-color: rgba(196, 168, 130, 0.3);
+}
+
+.cardTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.cardTitle {
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+}
+
+.categoryDot {
+  width: 7px;
+  height: 7px;
+  border-radius: $radius-full;
+  flex-shrink: 0;
+  opacity: 0.8;
+}
+
+.categoryName {
+  font-size: $t-xs;
+  color: $on-dark-soft;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  font-weight: $w-regular;
+}
+
+.editBtn {
+  width: 22px;
+  height: 22px;
+  border-radius: $radius-sm;
+  border: 1px solid transparent;
+  background: transparent;
+  color: $on-dark-faded;
+  font-size: 12px;
+  cursor: pointer;
+  opacity: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  @include transition(all, 160ms, $ease-settle);
+
+  &:hover {
+    background: rgba(255, 249, 240, 0.07);
+    border-color: $line-soft;
+    color: $on-dark-soft;
+    opacity: 1;
+  }
+}
+
+// ── Amounts ───────────────────────────────────────────────────────────────────
+.amounts {
+  display: flex;
+  align-items: baseline;
+  gap: $space-2;
+}
+
+.spentAmt {
+  font-size: $t-lg;
+  font-weight: $w-thin;
+  color: $on-dark;
+  font-family: $font-mono;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.01em;
+}
+
+.spentOver { color: $negative-text; }
+
+.limitAmt {
+  font-size: $t-xs;
+  color: $on-dark-faded;
+  letter-spacing: 0.01em;
+}
+
+.setLimit {
+  font-size: $t-xs;
+  color: $accent-text;
+  cursor: pointer;
+  letter-spacing: 0.02em;
+  opacity: 0.7;
+  @include transition(opacity, 140ms, $ease-settle);
+
+  &:hover { opacity: 1; }
+}
+
+// ── Progress bar ──────────────────────────────────────────────────────────────
+.track {
+  height: 3px;
+  background: rgba(255, 249, 240, 0.06);
+  border-radius: $radius-full;
+  overflow: hidden;
+}
+
+.fill {
+  height: 100%;
+  border-radius: $radius-full;
+  @include transition(width, 600ms, $ease-expo-out);
+}
+
+.fillOk   { background: rgba(74, 124, 89, 0.7); }
+.fillWarn { background: rgba(196, 168, 130, 0.7); }
+.fillOver { background: rgba(139, 58, 58, 0.8); }
+
+// ── Status text ───────────────────────────────────────────────────────────────
+.statusText {
+  font-size: 11px;
+  letter-spacing: 0.02em;
+}
+
+.statusOk   { color: $on-dark-faded; }
+.statusWarn { color: #c4a882; }
+.statusOver { color: $negative-text; }
+
+// ── Inline edit ───────────────────────────────────────────────────────────────
+.editRow {
+  display: flex;
+  align-items: center;
+  gap: $space-1_5;
+  background: rgba(255, 249, 240, 0.04);
+  border: 1px solid $line;
+  border-radius: $radius-sm;
+  padding: 0 $space-2;
+  height: 34px;
+}
+
+.editCurrency {
+  font-size: $t-sm;
+  color: $on-dark-faded;
+  flex-shrink: 0;
+}
+
+.editInput {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  font-size: $t-sm;
+  color: $on-dark;
+  font-family: $font-mono;
+  min-width: 0;
+
+  &::placeholder { color: $on-dark-faded; }
+
+  // Hide number spinners
+  &::-webkit-outer-spin-button,
+  &::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+  -moz-appearance: textfield;
+}
+
+.saveBtn {
+  width: 22px;
+  height: 22px;
+  border-radius: $radius-sm;
+  border: 1px solid rgba(74, 124, 89, 0.3);
+  background: rgba(74, 124, 89, 0.12);
+  color: $positive-text;
+  font-size: 11px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  @include transition(all, 140ms, $ease-settle);
+
+  &:hover:not(:disabled) { background: rgba(74, 124, 89, 0.22); }
+  &:disabled { opacity: 0.4; }
+}
+
+.cancelBtn {
+  width: 22px;
+  height: 22px;
+  border-radius: $radius-sm;
+  border: 1px solid transparent;
+  background: transparent;
+  color: $on-dark-faded;
+  font-size: 9px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  @include transition(all, 140ms, $ease-settle);
+
+  &:hover { background: rgba(255,249,240,0.06); color: $on-dark-soft; }
+}
+
+// ── Responsive ────────────────────────────────────────────────────────────────
+@media (max-width: 1200px) {
+  .grid { grid-template-columns: repeat(3, 1fr); }
+}
+
+@media (max-width: 900px) {
+  .grid { grid-template-columns: repeat(2, 1fr); }
+  .summaryRow { grid-template-columns: repeat(3, 1fr); }
+}
+
+@media (max-width: 767px) {
+  .page { padding: $space-5 $space-5 $space-10; }
+  .summaryRow { grid-template-columns: 1fr 1fr; }
+  .summaryCard:last-child { grid-column: 1 / -1; }
+  .grid { grid-template-columns: repeat(2, 1fr); gap: $space-3; }
+  .editBtn { opacity: 1; }
+}
+
+@media (max-width: 480px) {
+  .grid { grid-template-columns: 1fr; }
+}

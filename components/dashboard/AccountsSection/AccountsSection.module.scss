@@ -1,0 +1,195 @@
+@use '../../../styles/tokens/colors' as *;
+@use '../../../styles/tokens/typography' as *;
+@use '../../../styles/tokens/spacing' as *;
+@use '../../../styles/mixins/glass' as *;
+@use '../../../styles/mixins/animations' as *;
+
+.section {
+  padding: $space-8;
+  padding-top: 0;
+}
+
+.header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-bottom: $space-6;
+}
+
+.titleArea { display: flex; flex-direction: column; gap: $space-2; }
+
+.sectionTag {
+  font-size: $t-xs;
+  color: $on-dark-faded;
+  letter-spacing: $track-mark;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+
+  &::before {
+    content: '';
+    display: inline-block;
+    width: 16px;
+    height: 1px;
+    background: currentColor;
+  }
+}
+
+.sectionTitle {
+  font-size: $t-lg;
+  font-weight: $w-thin;
+  color: $on-dark;
+  letter-spacing: $track-snug;
+}
+
+.headerActions { display: flex; align-items: center; gap: $space-3; }
+
+.addBtn {
+  display: flex;
+  align-items: center;
+  gap: $space-1_5;
+  height: 30px;
+  padding: 0 $space-3;
+  border-radius: $radius-sm;
+  border: 1px solid $line-soft;
+  background: rgba(255, 249, 240, 0.04);
+  font-size: $t-xs;
+  color: $on-dark-soft;
+  letter-spacing: $track-wide;
+  cursor: pointer;
+  @include transition(all, 200ms, $ease-settle);
+
+  span { color: $accent-text; font-size: 14px; line-height: 1; }
+  &:hover { background: rgba(255, 249, 240, 0.07); border-color: $line; }
+}
+
+.ghostBtn {
+  height: 30px;
+  padding: 0 $space-3;
+  border-radius: $radius-sm;
+  border: 1px solid $line-soft;
+  background: transparent;
+  font-size: $t-xs;
+  color: $on-dark-faded;
+  letter-spacing: $track-wide;
+  cursor: pointer;
+  @include transition(all, 200ms, $ease-settle);
+
+  &:hover { background: rgba(255, 249, 240, 0.05); border-color: $line; color: $on-dark-soft; }
+}
+
+// ── Grid ──────────────────────────────────────────────────────────────────────
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: $space-4;
+}
+
+.card {
+  @include glass-card;
+  padding: $space-5;
+  display: flex;
+  flex-direction: column;
+  gap: $space-1;
+  @include transition(all, 200ms, $ease-settle);
+
+  &:hover {
+    border-color: $line;
+    .iconBtn { opacity: 1; }
+  }
+}
+
+.cardDeleting { opacity: 0.4; pointer-events: none; }
+
+.cardTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: $space-2;
+}
+
+.cardGlyph { font-size: $t-md; line-height: 1; }
+
+.cardActions { display: flex; gap: $space-1; }
+
+.iconBtn {
+  width: 22px;
+  height: 22px;
+  border-radius: $radius-sm;
+  border: 1px solid transparent;
+  background: transparent;
+  color: $on-dark-faded;
+  font-size: 11px;
+  cursor: pointer;
+  opacity: 0;
+  @include transition(all, 160ms, $ease-settle);
+
+  &:hover { background: rgba(255, 249, 240, 0.07); color: $on-dark-soft; }
+}
+
+.cardName {
+  font-size: $t-sm;
+  color: $on-dark;
+  font-weight: $w-regular;
+}
+
+.cardType {
+  font-size: $t-xs;
+  color: $on-dark-faded;
+  letter-spacing: 0.02em;
+}
+
+.cardBalance {
+  font-size: $t-md;
+  font-weight: $w-thin;
+  color: $on-dark;
+  font-family: $font-mono;
+  letter-spacing: -0.01em;
+  margin-top: $space-2;
+}
+
+.totalCard {
+  background: rgba(140, 42, 31, 0.06);
+  border-color: rgba(194, 96, 85, 0.20);
+  justify-content: center;
+}
+
+.totalValue {
+  font-size: $t-lg;
+  font-weight: $w-thin;
+  color: $accent-text;
+  font-family: $font-mono;
+  letter-spacing: -0.02em;
+  margin: $space-1 0;
+}
+
+// ── Empty ─────────────────────────────────────────────────────────────────────
+.emptyState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: $space-3;
+  padding: $space-10 $space-8;
+  text-align: center;
+}
+
+.emptyIcon { font-size: 28px; color: $on-dark-faded; opacity: 0.4; }
+.emptyText { font-size: $t-sm; color: $on-dark-faded; letter-spacing: 0.02em; }
+.emptySub  { font-size: $t-xs; color: $on-dark-faded; max-width: 280px; line-height: 1.6; }
+
+.emptyAction {
+  margin-top: $space-2;
+  font-size: $t-xs;
+  color: $accent-text;
+  letter-spacing: $track-wide;
+  cursor: pointer;
+  opacity: 0.8;
+  @include transition(opacity, 180ms, $ease-settle);
+  &:hover { opacity: 1; }
+}
+
+@media (max-width: 767px) {
+  .section { padding: $space-5; padding-top: 0; }
+  .grid { grid-template-columns: repeat(2, 1fr); gap: $space-3; }
+}

@@ -1,0 +1,381 @@
+﻿@use '../../../styles/tokens/colors' as *;
+@use '../../../styles/tokens/typography' as *;
+@use '../../../styles/tokens/spacing' as *;
+@use '../../../styles/mixins/glass' as *;
+@use '../../../styles/mixins/animations' as *;
+
+.section {
+  padding: $space-8;
+  padding-top: 0;
+}
+
+.header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-bottom: $space-8;
+}
+
+.titleArea {
+  display: flex;
+  flex-direction: column;
+  gap: $space-2;
+}
+
+.sectionTag {
+  font-size: $t-xs;
+  color: $on-dark-faded;
+  letter-spacing: $track-mark;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+
+  &::before {
+    content: '';
+    display: inline-block;
+    width: 16px;
+    height: 1px;
+    background: currentColor;
+  }
+}
+
+.sectionTitle {
+  font-size: $t-lg;
+  font-weight: $w-thin;
+  color: $on-dark;
+  letter-spacing: $track-snug;
+}
+
+.headerActions {
+  display: flex;
+  align-items: center;
+  gap: $space-3;
+}
+
+.addBtn {
+  display: flex;
+  align-items: center;
+  gap: $space-1_5;
+  height: 30px;
+  padding: 0 $space-3;
+  border-radius: $radius-sm;
+  border: 1px solid $line-soft;
+  background: rgba(255, 249, 240, 0.04);
+  font-size: $t-xs;
+  color: $on-dark-soft;
+  letter-spacing: $track-wide;
+  cursor: pointer;
+  @include transition(all, 200ms, $ease-settle);
+
+  span { color: $accent-text; font-size: 14px; line-height: 1; }
+  &:hover { background: rgba(255, 249, 240, 0.07); border-color: $line; }
+}
+
+.refreshBtn {
+  display: flex;
+  align-items: center;
+  gap: $space-1_5;
+  height: 30px;
+  padding: 0 $space-3;
+  border-radius: $radius-sm;
+  border: 1px solid $line-soft;
+  background: transparent;
+  font-size: $t-xs;
+  color: $on-dark-faded;
+  letter-spacing: $track-wide;
+  cursor: pointer;
+  @include transition(all, 200ms, $ease-settle);
+
+  &:hover { background: rgba(255, 249, 240, 0.05); border-color: $line; color: $on-dark-soft; }
+  &:disabled { opacity: 0.6; cursor: default; }
+}
+
+.refreshIcon { display: inline-block; font-size: 13px; line-height: 1; }
+
+.refreshBtnSpinning .refreshIcon {
+  animation: maSpin 0.9s linear infinite;
+}
+
+.formHint {
+  font-size: $t-xs;
+  color: $on-dark-faded;
+  line-height: 1.5;
+  margin-bottom: $space-3;
+  font-style: italic;
+}
+
+.liveDot {
+  display: inline-block;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: $positive-text;
+  margin-left: $space-2;
+  vertical-align: middle;
+  box-shadow: 0 0 6px rgba(123, 175, 142, 0.6);
+}
+
+.cardActions {
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+}
+
+.deleteCardBtn {
+  width: 22px;
+  height: 22px;
+  border-radius: $radius-sm;
+  border: 1px solid transparent;
+  background: transparent;
+  color: $on-dark-faded;
+  font-size: 9px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  @include transition(all, 180ms, $ease-settle);
+
+  &:hover { background: rgba(139, 58, 58, 0.15); border-color: rgba(139, 58, 58, 0.3); color: $negative-text; }
+}
+
+.cardDeleting { opacity: 0.4; pointer-events: none; }
+
+.emptyState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: $space-3;
+  padding: $space-10 $space-8;
+  border: 1px solid $line-soft;
+  border-radius: $radius-md;
+  background: rgba(255, 249, 240, 0.01);
+  margin-bottom: $space-8;
+}
+.emptyIcon  { font-size: 28px; color: $on-dark-faded; opacity: 0.4; }
+.emptyText  { font-size: $t-sm; color: $on-dark-faded; letter-spacing: 0.02em; }
+.emptyAction {
+  margin-top: $space-2;
+  font-size: $t-xs;
+  color: $accent-text;
+  letter-spacing: $track-wide;
+  cursor: pointer;
+  opacity: 0.8;
+  @include transition(opacity, 180ms, $ease-settle);
+  &:hover { opacity: 1; }
+}
+
+.totalBadge {
+  font-size: $t-xs;
+  color: $positive-text;
+  background: $positive-soft;
+  border: 1px solid rgba(74, 124, 89, 0.20);
+  padding: $space-1 $space-3;
+  border-radius: $radius-full;
+  display: flex;
+  align-items: center;
+  gap: $space-1;
+}
+
+// ── Portfolio overview bar ─────────────────────────────────────────────────────
+.allocationBar {
+  @include glass-card;
+  padding: $space-5 $space-6;
+  margin-bottom: $space-4;
+  display: flex;
+  flex-direction: column;
+  gap: $space-4;
+}
+
+.allocationTitle {
+  font-size: $t-xs;
+  color: $on-dark-faded;
+  text-transform: uppercase;
+  letter-spacing: $track-mark;
+}
+
+.allocationTrack {
+  height: 4px;
+  border-radius: $radius-full;
+  background: rgba(255, 249, 240, 0.06);
+  overflow: hidden;
+  display: flex;
+}
+
+.allocationSegment {
+  height: 100%;
+  border-radius: 0;
+  transition: width 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+
+  &:first-child { border-radius: $radius-full 0 0 $radius-full; }
+  &:last-child  { border-radius: 0 $radius-full $radius-full 0; }
+}
+
+.allocationLegend {
+  display: flex;
+  gap: $space-5;
+  flex-wrap: wrap;
+}
+
+.legendItem {
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+}
+
+.legendDot {
+  width: 6px;
+  height: 6px;
+  border-radius: $radius-full;
+  flex-shrink: 0;
+}
+
+.legendText {
+  font-size: $t-xs;
+  color: $on-dark-faded;
+  letter-spacing: 0.02em;
+}
+
+// ── Investment cards grid ─────────────────────────────────────────────────────
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: $space-4;
+}
+
+.card {
+  @include glass-card;
+  padding: $space-5;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  @include transition(border-color transform, $duration-slow, $ease-expo-out);
+
+  &:hover {
+    border-color: $line;
+    transform: translateY(-2px);
+    .deleteCardBtn { opacity: 1; }
+  }
+
+  // Top accent color strip
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: $space-5;
+    right: $space-5;
+    height: 1px;
+  }
+}
+
+.cardPositive::before { background: linear-gradient(90deg, transparent, $positive, transparent); }
+.cardNegative::before { background: linear-gradient(90deg, transparent, $negative, transparent); }
+.cardNeutral::before  { background: linear-gradient(90deg, transparent, $neutral, transparent); }
+
+.cardTop {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: $space-4;
+}
+
+.ticker {
+  font-size: $t-xs;
+  font-family: $font-mono;
+  color: $on-dark-faded;
+  letter-spacing: $track-mark;
+  text-transform: uppercase;
+}
+
+.typeBadge {
+  font-size: $t-xs;
+  color: $on-dark-faded;
+  background: rgba(255, 249, 240, 0.05);
+  border: 1px solid $line-soft;
+  padding: 2px 6px;
+  border-radius: $radius-full;
+  letter-spacing: 0.05em;
+}
+
+.name {
+  font-size: $t-sm;
+  color: $on-dark;
+  font-weight: $w-light;
+  line-height: $lh-snug;
+  margin-bottom: $space-3;
+}
+
+.value {
+  font-size: $t-lg;
+  font-weight: $w-thin;
+  color: $on-dark;
+  font-family: $font-mono;
+  letter-spacing: $track-snug;
+  line-height: 1;
+  margin-bottom: $space-2;
+}
+
+.gain {
+  font-size: $t-sm;
+  font-weight: $w-light;
+  display: flex;
+  align-items: center;
+  gap: $space-1;
+  margin-bottom: $space-4;
+}
+
+.gainPositive { color: $positive-text; }
+.gainNegative { color: $negative-text; }
+
+// Sparkline
+.sparklineWrapper {
+  height: 40px;
+  margin: 0 -4px;
+
+  :global(.recharts-surface) { overflow: visible; }
+}
+
+.allocation {
+  margin-top: $space-3;
+  padding-top: $space-3;
+  border-top: 1px solid $line-soft;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.allocationLabel {
+  font-size: $t-xs;
+  color: $on-dark-faded;
+  letter-spacing: $track-wide;
+  text-transform: uppercase;
+}
+
+.allocationValue {
+  font-size: $t-xs;
+  color: $on-dark-soft;
+  font-family: $font-mono;
+}
+
+// ── Mobile ────────────────────────────────────────────────────────────────────
+@media (max-width: 767px) {
+  .section {
+    padding: $space-5;
+    padding-top: 0;
+    padding-bottom: $space-10;
+  }
+
+  .header {
+    flex-wrap: wrap;
+    gap: $space-3;
+    align-items: flex-start;
+    margin-bottom: $space-6;
+  }
+
+  // grid uses auto-fit minmax(220px) so it already stacks to 1 column
+  // just ensure full-width on narrow screens
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}

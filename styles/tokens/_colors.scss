@@ -1,0 +1,104 @@
+// ─── MA Finance OS — Color System ────────────────────────────────────────────
+// Palette source: portifolio-rho-rosy-34.vercel.app
+// Ink Night (dark mode) as default — washi paper values preserved for reference
+
+// ── Surfaces ─────────────────────────────────────────────────────────────────
+$bg:          #1A1816;          // ink night — main canvas
+$bg-raised:   #211F1C;          // slightly lifted surface
+$bg-glass:    rgba(26, 24, 22, 0.65);
+$bg-overlay:  rgba(14, 13, 11, 0.88);
+
+// Washi paper (light mode ref — sections inverting to light)
+$bg-light:    #EEEAE3;
+$bg-light-glass: rgba(238, 234, 227, 0.55);
+
+// ── Ink / text hierarchy ──────────────────────────────────────────────────────
+$ink:         #0E0D0B;          // pure ink
+$ink-soft:    #2A2825;
+$ink-mute:    #6B6660;
+
+// On-dark text scale — from portfolio
+$on-dark:         #F2EFE9;
+$on-dark-soft:    rgba(242, 239, 233, 0.85);
+$on-dark-subtle:  rgba(242, 239, 233, 0.70);
+$on-dark-mute:    rgba(242, 239, 233, 0.55);
+$on-dark-faded:   rgba(242, 239, 233, 0.40);
+
+// Active aliases for dark-mode default
+$text-primary:    $on-dark;
+$text-secondary:  $on-dark-soft;
+$text-muted:      $on-dark-mute;
+$text-faded:      $on-dark-faded;
+
+// ── Lines / borders ──────────────────────────────────────────────────────────
+$line:            rgba(242, 239, 233, 0.12);
+$line-soft:       rgba(242, 239, 233, 0.06);
+$line-bright:     rgba(242, 239, 233, 0.20);
+
+// ── Accent — shu-iro (vermelho japonês) ──────────────────────────────────────
+$accent:          #8C2A1F;
+$accent-soft:     rgba(140, 42, 31, 0.16);
+$accent-bright:   #A8352A;
+$accent-text:     #C26055;      // legible on dark bg
+
+// Accent night — âmbar para seções escuras
+$accent-night:       #E89A4F;
+$accent-night-soft:  rgba(232, 154, 79, 0.20);
+$accent-night-text:  #E89A4F;
+
+// ── Semantic ─────────────────────────────────────────────────────────────────
+$positive:       #3D6B50;
+$positive-soft:  rgba(61, 107, 80, 0.18);
+$positive-text:  #7BAF8E;
+$negative:       #7A2E2E;
+$negative-soft:  rgba(122, 46, 46, 0.18);
+$negative-text:  #B87070;
+$neutral:        #6B6660;
+
+// ── Glass ────────────────────────────────────────────────────────────────────
+$glass-bg:       rgba(26, 24, 22, 0.65);
+$glass-border:   rgba(242, 239, 233, 0.08);
+
+// ── Legacy aliases (used by existing components) ─────────────────────────────
+$bg-void:         $bg;
+$text-tertiary:   $on-dark-faded;
+
+$border-subtle:   $line-soft;
+$border-soft:     $line-soft;
+$border-medium:   $line;
+$border-bright:   $line-bright;
+
+// ── Runtime-switchable overrides — all key surfaces use CSS vars ─────────────
+// Re-declare key tokens as CSS custom-property references so that any SCSS
+// rule that uses them (color: $on-dark, border: 1px solid $line-soft, etc.)
+// compiles to color: var(--on-dark), which responds to [data-theme] at runtime.
+// Background surfaces
+$bg:              var(--bg);
+$bg-raised:       var(--bg-raised);
+$bg-glass:        var(--bg-glass);
+$bg-void:         var(--bg);
+
+// Text
+$on-dark:         var(--on-dark);
+$on-dark-soft:    var(--on-dark-soft);
+$on-dark-subtle:  var(--on-dark-subtle);
+$on-dark-mute:    var(--on-dark-mute);
+$on-dark-faded:   var(--on-dark-faded);
+
+$text-primary:    var(--on-dark);
+$text-secondary:  var(--on-dark-soft);
+$text-muted:      var(--on-dark-mute);
+$text-faded:      var(--on-dark-faded);
+
+$line:            var(--line);
+$line-soft:       var(--line-soft);
+$line-bright:     var(--line-bright);
+
+$glass-bg:        var(--glass-bg);
+$glass-border:    var(--glass-border);
+
+$positive-text:   var(--positive-text);
+$negative-text:   var(--negative-text);
+$accent-text:     var(--accent-text);
+
+// CSS custom properties — declared in app/globals.scss

@@ -1,0 +1,324 @@
+@use '../../../styles/tokens/colors' as *;
+@use '../../../styles/tokens/typography' as *;
+@use '../../../styles/tokens/spacing' as *;
+@use '../../../styles/mixins/animations' as *;
+@use '../../../styles/mixins/glass' as *;
+
+// ── Page ──────────────────────────────────────────────────────────────────────
+.page {
+  display: flex;
+  flex-direction: column;
+  min-height: calc(100vh - #{$topbar-height});
+  padding: 0 $space-8 $space-10;
+  overflow-y: auto;
+  gap: $space-4;
+}
+
+// ── Header ────────────────────────────────────────────────────────────────────
+.pageHeader {
+  display: flex;
+  flex-direction: column;
+  gap: $space-1_5;
+  padding: $space-6 0 $space-3;
+  flex-shrink: 0;
+}
+
+.pageTag {
+  font-size: $t-xs;
+  color: $on-dark-faded;
+  letter-spacing: $track-mark;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+
+  &::before {
+    content: '';
+    display: inline-block;
+    width: 16px;
+    height: 1px;
+    background: currentColor;
+  }
+}
+
+.pageTitle {
+  font-size: $t-xl;
+  font-weight: $w-thin;
+  color: $on-dark;
+  letter-spacing: $track-snug;
+  line-height: $lh-tight;
+}
+
+.pageMonth {
+  font-size: $t-xs;
+  color: $on-dark-faded;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+// ── Stats row ─────────────────────────────────────────────────────────────────
+.statsRow {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: $space-4;
+}
+
+.statCard {
+  @include glass-card;
+  padding: $space-5 $space-6;
+  display: flex;
+  flex-direction: column;
+  gap: $space-1_5;
+}
+
+.statLabel {
+  font-size: $t-xs;
+  color: $on-dark-faded;
+  text-transform: uppercase;
+  letter-spacing: $track-mark;
+}
+
+.statValue {
+  font-size: $t-xl;
+  font-weight: $w-thin;
+  color: $on-dark;
+  letter-spacing: -0.02em;
+  font-family: $font-mono;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+
+.valueIncome  { color: $positive-text; }
+.valueExpense { color: $on-dark-soft; }
+
+.statSub {
+  font-size: 11px;
+  color: $on-dark-faded;
+  letter-spacing: 0.01em;
+}
+
+.subDanger   { color: $negative-text; }
+.subPositive { color: $positive-text; }
+
+// ── Main chart card ────────────────────────────────────────────────────────────
+.chartCard {
+  @include glass-card;
+  padding: $space-6;
+  display: flex;
+  flex-direction: column;
+  gap: $space-4;
+}
+
+.chartCardHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: $space-4;
+  flex-wrap: wrap;
+}
+
+.chartCardLeft {
+  display: flex;
+  flex-direction: column;
+  gap: $space-2;
+}
+
+.chartTitle {
+  font-size: $t-sm;
+  color: $on-dark-soft;
+  font-weight: $w-light;
+  letter-spacing: 0.01em;
+}
+
+.chartTotals {
+  display: flex;
+  gap: $space-4;
+}
+
+.chartTotal {
+  display: flex;
+  align-items: center;
+  gap: $space-1_5;
+  font-size: $t-xs;
+  color: $on-dark-faded;
+  font-family: $font-mono;
+  font-variant-numeric: tabular-nums;
+}
+
+.totalDot {
+  width: 7px;
+  height: 7px;
+  border-radius: $radius-full;
+  flex-shrink: 0;
+}
+
+.periodBtns {
+  display: flex;
+  gap: 2px;
+  background: rgba(255, 249, 240, 0.03);
+  border: 1px solid $line-soft;
+  border-radius: $radius-sm;
+  padding: 2px;
+}
+
+.periodBtn {
+  height: 26px;
+  padding: 0 $space-3;
+  border-radius: calc(#{$radius-sm} - 2px);
+  font-size: $t-xs;
+  letter-spacing: 0.04em;
+  color: $on-dark-faded;
+  cursor: pointer;
+  @include transition(all, 160ms, $ease-settle);
+
+  &:hover { color: $on-dark-soft; }
+}
+
+.periodBtnActive {
+  background: rgba(255, 249, 240, 0.07);
+  color: $on-dark-soft;
+}
+
+.chartWrap {
+  height: 240px;
+}
+
+// ── Tooltip ───────────────────────────────────────────────────────────────────
+.tooltip {
+  background: rgba(14, 12, 10, 0.95);
+  border: 1px solid $line-soft;
+  border-radius: $radius-md;
+  padding: $space-3 $space-4;
+  backdrop-filter: blur(12px);
+  display: flex;
+  flex-direction: column;
+  gap: $space-1_5;
+}
+
+.tooltipLabel {
+  font-size: $t-xs;
+  color: $on-dark-faded;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  margin-bottom: $space-1;
+}
+
+.tooltipRow {
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+  font-size: $t-xs;
+  color: $on-dark-soft;
+}
+
+.tooltipDot {
+  width: 6px;
+  height: 6px;
+  border-radius: $radius-full;
+  flex-shrink: 0;
+}
+
+.tooltipVal {
+  font-family: $font-mono;
+  font-variant-numeric: tabular-nums;
+  margin-left: auto;
+  padding-left: $space-4;
+}
+
+// ── Category card ─────────────────────────────────────────────────────────────
+.catCard {
+  @include glass-card;
+  padding: $space-6;
+  display: flex;
+  flex-direction: column;
+  gap: $space-5;
+}
+
+.catTitle {
+  font-size: $t-sm;
+  color: $on-dark-soft;
+  font-weight: $w-light;
+  letter-spacing: 0.01em;
+}
+
+.catList {
+  display: flex;
+  flex-direction: column;
+  gap: $space-4;
+}
+
+.catRow {
+  display: grid;
+  grid-template-columns: 180px 1fr 80px;
+  align-items: center;
+  gap: $space-4;
+}
+
+.catMeta {
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+}
+
+.catDot {
+  width: 7px;
+  height: 7px;
+  border-radius: $radius-full;
+  flex-shrink: 0;
+  opacity: 0.8;
+}
+
+.catName {
+  font-size: $t-xs;
+  color: $on-dark-soft;
+  letter-spacing: 0.02em;
+  flex: 1;
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.catPct {
+  font-size: $t-xs;
+  color: $on-dark-faded;
+  font-family: $font-mono;
+  font-variant-numeric: tabular-nums;
+  margin-left: auto;
+  flex-shrink: 0;
+}
+
+.catTrack {
+  height: 4px;
+  background: rgba(255, 249, 240, 0.05);
+  border-radius: $radius-full;
+  overflow: hidden;
+}
+
+.catFill {
+  height: 100%;
+  border-radius: $radius-full;
+  opacity: 0.65;
+  @include transition(width, 700ms, $ease-expo-out);
+}
+
+.catAmt {
+  font-size: $t-xs;
+  color: $on-dark-soft;
+  font-family: $font-mono;
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+
+// ── Responsive ────────────────────────────────────────────────────────────────
+@media (max-width: 1100px) {
+  .statsRow { grid-template-columns: repeat(2, 1fr); }
+  .catRow   { grid-template-columns: 140px 1fr 70px; }
+}
+
+@media (max-width: 767px) {
+  .page { padding: $space-5 $space-5 $space-10; }
+  .statsRow { grid-template-columns: repeat(2, 1fr); }
+  .chartWrap { height: 200px; }
+  .catRow   { grid-template-columns: 120px 1fr 60px; gap: $space-3; }
+}

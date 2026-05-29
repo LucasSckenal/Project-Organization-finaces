@@ -1,0 +1,488 @@
+// ─── MA Finance OS — Global Styles ───────────────────────────────────────────
+// Aesthetic base: portifolio-rho-rosy-34.vercel.app
+
+@use '../styles/tokens/colors' as *;
+@use '../styles/tokens/typography' as *;
+@use '../styles/tokens/spacing' as *;
+@use '../styles/mixins/animations' as *;
+
+// ── CSS Custom Properties ─────────────────────────────────────────────────────
+:root {
+  color-scheme: dark;
+
+  // ── Palette — ink night (dark default) ── STATIC values (not SCSS vars) ──────
+  // These are purposely hardcoded so [data-theme="light"] overrides them cleanly.
+  // Component SCSS files reference these via var(--xxx) through the token aliases.
+  --bg:              #1A1816;
+  --bg-raised:       #211F1C;
+  --bg-glass:        rgba(26, 24, 22, 0.65);
+  --bg-overlay:      rgba(14, 13, 11, 0.88);
+  --bg-light:        #EEEAE3;
+
+  --ink:             #0E0D0B;
+  --ink-soft:        #2A2825;
+  --ink-mute:        #6B6660;
+
+  --on-dark:         rgba(242, 239, 233, 0.95);
+  --on-dark-soft:    rgba(242, 239, 233, 0.85);
+  --on-dark-subtle:  rgba(242, 239, 233, 0.70);
+  --on-dark-mute:    rgba(242, 239, 233, 0.55);
+  --on-dark-faded:   rgba(242, 239, 233, 0.40);
+
+  --text-primary:    rgba(242, 239, 233, 0.95);
+  --text-secondary:  rgba(242, 239, 233, 0.85);
+  --text-muted:      rgba(242, 239, 233, 0.55);
+  --text-faded:      rgba(242, 239, 233, 0.40);
+
+  --line:            rgba(242, 239, 233, 0.12);
+  --line-soft:       rgba(242, 239, 233, 0.06);
+  --line-bright:     rgba(242, 239, 233, 0.20);
+
+  --accent:          #8C2A1F;
+  --accent-soft:     rgba(140, 42, 31, 0.16);
+  --accent-bright:   #A8352A;
+  --accent-text:     #C26055;
+
+  --accent-night:      #E89A4F;
+  --accent-night-soft: rgba(232, 154, 79, 0.20);
+  --accent-night-text: #E89A4F;
+
+  --positive:        #3D6B50;
+  --positive-text:   #7BAF8E;
+  --negative:        #7A2E2E;
+  --negative-text:   #B87070;
+
+  --glass-bg:            rgba(26, 24, 22, 0.72);
+  --glass-bg-elevated:   rgba(33, 31, 28, 0.85);
+  --glass-border:        rgba(242, 239, 233, 0.09);
+  --glass-shine:         rgba(255, 255, 255, 0.02);
+  --glass-top-shine:     rgba(255, 255, 255, 0.04);
+  --surface-panel:       rgba(18, 16, 14, 0.95);
+
+  --card-shadow-far:     rgba(0, 0, 0, 0.60);
+  --card-shadow-near:    rgba(0, 0, 0, 0.38);
+
+  // ── Type scale (1.333 perfect fourth) ────────────────────────────────────
+  --t-xs:      #{$t-xs};
+  --t-sm:      #{$t-sm};
+  --t-base:    #{$t-base};
+  --t-md:      #{$t-md};
+  --t-lg:      #{$t-lg};
+  --t-xl:      #{$t-xl};
+  --t-2xl:     #{$t-2xl};
+  --t-3xl:     #{$t-3xl};
+  --t-display: #{$t-display};
+  --t-hero:    #{$t-hero};
+
+  // ── Tracking ──────────────────────────────────────────────────────────────
+  --track-tight:  #{$track-tight};
+  --track-snug:   #{$track-snug};
+  --track-normal: #{$track-normal};
+  --track-wide:   #{$track-wide};
+  --track-mark:   #{$track-mark};
+
+  // ── Fonts ──────────────────────────────────────────────────────────────────
+  --font-sans:  var(--font-inter, 'Inter', system-ui, sans-serif);
+  --font-serif: var(--font-noto, 'Noto Serif JP', serif);
+  --font-mono:  'SF Mono', ui-monospace, monospace;
+
+  // ── Spacing ────────────────────────────────────────────────────────────────
+  --s-1: #{$s-1};
+  --s-2: #{$s-2};
+  --s-3: #{$s-3};
+  --s-4: #{$s-4};
+  --s-5: #{$s-5};
+  --s-6: #{$s-6};
+  --s-7: #{$s-7};
+  --s-8: #{$s-8};
+
+  --container:     #{$container};
+  --gutter:        #{$gutter};
+  --sidebar-width: #{$sidebar-width};
+  --topbar-height: #{$topbar-height};
+  --radius-sm:     #{$radius-sm};
+  --radius:        #{$radius-md};
+  --radius-lg:     #{$radius-lg};
+
+  // ── Easing — from portfolio ────────────────────────────────────────────────
+  --ease-cinema:   #{$ease-cinema};
+  --ease-drift:    #{$ease-drift};
+  --ease-settle:   #{$ease-settle};
+  --ease-out:      #{$ease-out};
+
+  // ── Duration — from portfolio ──────────────────────────────────────────────
+  --dur-fast:  #{$dur-fast};
+  --dur:       #{$dur-base};
+  --dur-slow:  #{$dur-slow};
+  --dur-epic:  #{$dur-epic};
+
+  // ── Z stack ────────────────────────────────────────────────────────────────
+  --z-content:     #{$z-content};
+  --z-nav:         #{$z-nav};
+  --z-overlay:     #{$z-overlay};
+  --z-atmosphere:  #{$z-atmosphere};
+  --z-cursor:      #{$z-cursor};
+}
+
+// ── Light Theme Overrides ─────────────────────────────────────────────────────
+[data-theme="light"] {
+  color-scheme: light;
+
+  // ── Palette overrides ─────────────────────────────────────────────────────
+  --bg:              #f0ebe1;
+  --bg-raised:       #e8e2d6;
+  --bg-glass:        rgba(244, 240, 232, 0.88);
+  --bg-overlay:      rgba(240, 235, 226, 0.97);
+
+  --on-dark:         rgba(20, 17, 14, 0.92);
+  --on-dark-soft:    rgba(20, 17, 14, 0.70);
+  --on-dark-subtle:  rgba(20, 17, 14, 0.54);
+  --on-dark-mute:    rgba(20, 17, 14, 0.40);
+  --on-dark-faded:   rgba(20, 17, 14, 0.30);
+
+  --text-primary:    rgba(20, 17, 14, 0.92);
+  --text-secondary:  rgba(20, 17, 14, 0.70);
+  --text-muted:      rgba(20, 17, 14, 0.40);
+  --text-faded:      rgba(20, 17, 14, 0.30);
+
+  --line:            rgba(20, 17, 14, 0.10);
+  --line-soft:       rgba(20, 17, 14, 0.065);
+  --line-bright:     rgba(20, 17, 14, 0.18);
+
+  // ── Glass surfaces ────────────────────────────────────────────────────────
+  --glass-bg:            rgba(255, 253, 248, 0.72);
+  --glass-bg-elevated:   rgba(255, 255, 252, 0.88);
+  --glass-border:        rgba(20, 17, 14, 0.08);
+  --glass-shine:         rgba(255, 255, 255, 0.45);
+  --glass-top-shine:     rgba(255, 255, 255, 0.60);
+
+  // Panel surfaces (sidebar + topbar)
+  --surface-panel:       rgba(236, 231, 222, 0.97);
+
+  // Lighter shadows for light mode
+  --card-shadow-far:     rgba(100, 90, 75, 0.12);
+  --card-shadow-near:    rgba(80, 70, 60, 0.08);
+
+  // ── Semantic ──────────────────────────────────────────────────────────────
+  --positive-text:   #2d6b47;
+  --negative-text:   #8f3030;
+  --accent-text:     #8c2a1f;
+
+  // ── Key element overrides ─────────────────────────────────────────────────
+  body {
+    background-color: #f0ebe1;
+    color: rgba(20, 17, 14, 0.92);
+  }
+
+  h1, h2, h3, h4, h5, h6 { color: rgba(20, 17, 14, 0.92); }
+  p                       { color: rgba(20, 17, 14, 0.68); }
+
+  ::selection {
+    background: rgba(140, 42, 31, 0.14);
+    color: rgba(20, 17, 14, 0.92);
+  }
+
+  // ── Global form primitives ────────────────────────────────────────────────
+  .form-input,
+  .form-select,
+  .form-textarea {
+    background: rgba(20, 17, 14, 0.04);
+    border-color: rgba(20, 17, 14, 0.10);
+    color: rgba(20, 17, 14, 0.88);
+    &::placeholder { color: rgba(20, 17, 14, 0.30); }
+    &:focus        { border-color: rgba(20, 17, 14, 0.20); }
+  }
+
+  .form-label         { color: rgba(20, 17, 14, 0.38); }
+  .form-section-title { color: rgba(20, 17, 14, 0.36); border-color: rgba(20, 17, 14, 0.08); }
+
+  .form-submit {
+    background: rgba(20, 17, 14, 0.05);
+    border-color: rgba(20, 17, 14, 0.13);
+    color: rgba(20, 17, 14, 0.82);
+    &:hover:not(:disabled) { background: rgba(20, 17, 14, 0.09); }
+  }
+
+  .form-toggle-btn {
+    border-color: rgba(20, 17, 14, 0.09);
+    color: rgba(20, 17, 14, 0.46);
+    &:hover { border-color: rgba(20, 17, 14, 0.18); color: rgba(20, 17, 14, 0.72); }
+  }
+
+  // ── Scrollbars ────────────────────────────────────────────────────────────
+  * {
+    scrollbar-color: rgba(20, 17, 14, 0.15) transparent;
+  }
+}
+
+// ── Global keyframes (used by landing page CSS animations) ───────────────────
+@keyframes maFadeRise {
+  from { opacity: 0; transform: translateY(22px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes maFadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes maFadeOut {
+  from { opacity: 1; transform: scale(1);    }
+  to   { opacity: 0; transform: scale(0.97); }
+}
+
+@keyframes maSpin {
+  from { transform: rotate(0deg);   }
+  to   { transform: rotate(360deg); }
+}
+
+@keyframes maScrollBounce {
+  0%, 100% { transform: translateX(-50%) translateY(0);   opacity: 0.35; }
+  50%       { transform: translateX(-50%) translateY(6px); opacity: 0.70; }
+}
+
+// ── Reset ─────────────────────────────────────────────────────────────────────
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  scroll-behavior: auto;
+}
+html::-webkit-scrollbar { display: none; }
+
+// Lenis smooth scroll
+html.lenis                             { height: auto; }
+.lenis.lenis-smooth                    { scroll-behavior: auto; }
+.lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
+
+// ── Body ──────────────────────────────────────────────────────────────────────
+body {
+  font-family: var(--font-sans);
+  font-size: var(--t-base);
+  font-weight: 400;
+  line-height: 1.7;
+  color: var(--on-dark);
+  background-color: var(--bg);
+  min-height: 100vh;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  transition: background-color 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+              color 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+// ── Type defaults ─────────────────────────────────────────────────────────────
+h1, h2, h3, h4, h5, h6 {
+  font-weight: $w-regular;
+  line-height: $lh-tight;
+  letter-spacing: $track-snug;
+  color: var(--on-dark);
+}
+
+p {
+  color: var(--on-dark-soft);
+  line-height: $lh-relaxed;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  background: none;
+  color: inherit;
+}
+
+input, textarea, select { font-family: inherit; }
+
+img, video, svg {
+  display: block;
+  max-width: 100%;
+}
+
+// ── Selection ─────────────────────────────────────────────────────────────────
+::selection {
+  background: $accent-soft;
+  color: $on-dark;
+}
+
+// ── Focus ─────────────────────────────────────────────────────────────────────
+:focus-visible {
+  outline: 1px solid rgba(140, 42, 31, 0.5);
+  outline-offset: 2px;
+}
+
+// ── Utility ───────────────────────────────────────────────────────────────────
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0,0,0,0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+.font-serif { font-family: $font-serif; }
+.font-mono  { font-family: $font-mono; font-variant-numeric: tabular-nums; }
+
+// ── Label utility — used heavily in portfolio ────────────────────────────────
+.label {
+  font-size: $t-xs;
+  letter-spacing: $track-mark;
+  text-transform: uppercase;
+  color: $on-dark-mute;
+  font-weight: $w-regular;
+}
+
+// ── Drawer form primitives — global classes shared across all forms ───────────
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 1.25rem;
+}
+
+.form-label {
+  font-size: 10px;
+  color: $on-dark-faded;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.form-input {
+  width: 100%;
+  height: 40px;
+  background: rgba(255, 249, 240, 0.04);
+  border: 1px solid $line-soft;
+  border-radius: $radius-sm;
+  padding: 0 $space-4;
+  font-size: $t-sm;
+  color: $on-dark;
+  outline: none;
+  font-family: $font-sans;
+  transition: border-color 180ms $ease-settle;
+
+  &:focus        { border-color: $line; }
+  &::placeholder { color: $on-dark-faded; }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+.form-select {
+  width: 100%;
+  height: 40px;
+  background: rgba(255, 249, 240, 0.04);
+  border: 1px solid $line-soft;
+  border-radius: $radius-sm;
+  padding: 0 32px 0 $space-4;
+  font-size: $t-sm;
+  color: $on-dark;
+  outline: none;
+  font-family: $font-sans;
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%236b6560'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  transition: border-color 180ms $ease-settle;
+
+  &:focus { border-color: $line; }
+
+  option { background: #1a1816; color: #f0ebe2; }
+}
+
+.form-textarea {
+  width: 100%;
+  height: 80px;
+  background: rgba(255, 249, 240, 0.04);
+  border: 1px solid $line-soft;
+  border-radius: $radius-sm;
+  padding: $space-3 $space-4;
+  font-size: $t-sm;
+  color: $on-dark;
+  outline: none;
+  font-family: $font-sans;
+  resize: none;
+  line-height: 1.5;
+  transition: border-color 180ms $ease-settle;
+
+  &:focus        { border-color: $line; }
+  &::placeholder { color: $on-dark-faded; }
+}
+
+.form-toggle {
+  display: flex;
+  gap: $space-2;
+  flex-wrap: wrap;
+}
+
+.form-toggle-btn {
+  flex: 1;
+  height: 36px;
+  border-radius: $radius-sm;
+  border: 1px solid $line-soft;
+  background: transparent;
+  font-size: $t-xs;
+  color: $on-dark-mute;
+  cursor: pointer;
+  letter-spacing: 0.03em;
+  font-family: $font-sans;
+  transition: all 180ms $ease-settle;
+
+  &:hover { border-color: $line; color: $on-dark-soft; }
+
+  &.active-income  { background: rgba(74, 124, 89, 0.15); border-color: rgba(74, 124, 89, 0.4); color: $positive-text; }
+  &.active-expense { background: rgba(139, 58, 58, 0.15); border-color: rgba(139, 58, 58, 0.4); color: $negative-text; }
+  &.active-neutral { background: rgba(255, 249, 240, 0.06); border-color: $line; color: $on-dark; }
+}
+
+.form-submit {
+  width: 100%;
+  height: 44px;
+  margin-top: $space-6;
+  background: rgba(255, 249, 240, 0.06);
+  border: 1px solid $line;
+  border-radius: $radius-sm;
+  color: $on-dark;
+  font-size: $t-sm;
+  font-family: $font-sans;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  transition: all 200ms $ease-settle;
+
+  &:hover:not(:disabled) { background: rgba(255, 249, 240, 0.10); border-color: $line-bright; }
+  &:disabled             { opacity: 0.4; cursor: not-allowed; }
+}
+
+.form-error {
+  font-size: $t-xs;
+  color: $negative-text;
+  margin-top: -$space-3;
+  margin-bottom: $space-3;
+}
+
+.form-section-title {
+  font-size: $t-xs;
+  color: $on-dark-faded;
+  letter-spacing: $track-mark;
+  text-transform: uppercase;
+  margin-bottom: $space-4;
+  padding-bottom: $space-2;
+  border-bottom: 1px solid $line-soft;
+}

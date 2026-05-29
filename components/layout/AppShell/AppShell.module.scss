@@ -1,0 +1,217 @@
+@use '../../../styles/tokens/colors' as *;
+@use '../../../styles/tokens/typography' as *;
+@use '../../../styles/tokens/spacing' as *;
+@use '../../../styles/mixins/animations' as *;
+
+.shell {
+  display: flex;
+  min-height: 100vh;
+  position: relative;
+}
+
+.content {
+  flex: 1;
+  margin-left: $sidebar-width;
+  padding-top: $topbar-height;
+  position: relative;
+  z-index: 1;
+  min-height: 100vh;
+}
+
+// ── Top rail ───────────────────────────────────────────────────────────────────
+// Fixed full-width — sits behind the sidebar (z-index < $z-nav: 50)
+// The spacer's border-right perfectly continues the sidebar's border-right,
+// creating a single unified frame around the content area.
+.topbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: $z-elevated;   // 10 — below sidebar at 50
+  height: $topbar-height;
+  display: flex;
+  align-items: stretch;
+  background: var(--surface-panel, var(--glass-bg));
+  backdrop-filter: blur(20px) saturate(120%);
+  -webkit-backdrop-filter: blur(20px) saturate(120%);
+  border-bottom: 1px solid var(--line-soft);
+}
+
+// Mirrors sidebar width — border-right continues the sidebar's vertical edge
+.topbarSpacer {
+  width: $sidebar-width;
+  flex-shrink: 0;
+  border-right: 1px solid $line-soft;
+}
+
+.topbarContent {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 $space-8;
+}
+
+.topbarLeft {
+  display: flex;
+  align-items: baseline;
+  gap: $space-3;
+}
+
+.topbarNum {
+  font-size: $t-xs;
+  color: $on-dark-faded;
+  letter-spacing: $track-wide;
+  font-variant-numeric: tabular-nums;
+}
+
+.topbarHeading {
+  font-size: $t-sm;
+  color: $on-dark-soft;
+  font-weight: $w-light;
+  letter-spacing: 0.01em;
+}
+
+.topbarRight {
+  display: flex;
+  align-items: center;
+  gap: $space-3;
+}
+
+.topbarBtn {
+  height: 32px;
+  min-width: 32px;
+  padding: 0 $space-3;
+  border-radius: $radius-md;
+  background: transparent;
+  border: 1px solid transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: $space-2;
+  color: $on-dark-faded;
+  cursor: pointer;
+  @include transition(all, 200ms, $ease-settle);
+
+  svg {
+    flex-shrink: 0;
+    transition: opacity 200ms $ease-settle;
+  }
+
+  &:hover {
+    background: rgba(128, 120, 112, 0.10);
+    color: $on-dark-soft;
+    border-color: $line-soft;
+    .topbarBtnHint { opacity: 1; }
+  }
+}
+
+.topbarBtnActive {
+  background: rgba(140, 42, 31, 0.10);
+  border-color: rgba(140, 42, 31, 0.22);
+  color: $accent-text;
+
+  &:hover {
+    background: rgba(140, 42, 31, 0.15);
+    border-color: rgba(140, 42, 31, 0.35);
+  }
+}
+
+.topbarBtnMuted {
+  opacity: 0.45;
+}
+
+.topbarBtnHint {
+  font-size: 10px;
+  color: $on-dark-faded;
+  letter-spacing: 0.02em;
+  opacity: 0;
+  @include transition(opacity, 200ms, $ease-settle);
+  font-family: $font-mono;
+}
+
+// ── Route transition flash ────────────────────────────────────────────────────
+.routeFlash {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  background: rgba(255, 249, 240, 0.03);
+  pointer-events: none;
+}
+
+.statusDot {
+  width: 6px;
+  height: 6px;
+  border-radius: $radius-full;
+  background: $positive;
+  box-shadow: 0 0 6px 0 rgba(74, 124, 89, 0.60);
+  animation: pulse-soft 3s ease-in-out infinite;
+}
+
+// ── Hamburger — hidden on desktop, revealed in mobile media query ─────────────
+.hamburger {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 32px;
+  height: 32px;
+  padding: 6px;
+  border-radius: $radius-sm;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  flex-shrink: 0;
+
+  .hamburgerLine {
+    width: 100%;
+    height: 1.5px;
+    background: $on-dark-soft;
+    border-radius: $radius-full;
+    transform-origin: center;
+    transition: transform 320ms cubic-bezier(0.22, 1, 0.36, 1),
+                opacity   200ms ease,
+                background 200ms ease;
+  }
+
+  &.hamburgerOpen {
+    .hamburgerLine:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+    .hamburgerLine:nth-child(2) { opacity: 0; transform: scaleX(0); }
+    .hamburgerLine:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+  }
+
+  &:hover .hamburgerLine { background: $on-dark; }
+}
+
+// ── Mobile backdrop — shown when sidebar is open on mobile ────────────────────
+.mobileBackdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 40;   // above topbar (10), below sidebar (50)
+  background: rgba(0, 0, 0, 0.60);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+}
+
+// ── Mobile breakpoint ─────────────────────────────────────────────────────────
+@media (max-width: 767px) {
+  .hamburger {
+    display: flex;
+  }
+
+  .topbarSpacer {
+    display: none;
+  }
+
+  .topbarContent {
+    padding: 0 $space-5;
+  }
+
+  .topbarLeft {
+    align-items: center;
+  }
+
+  .content {
+    margin-left: 0;
+  }
+}

@@ -1,0 +1,30 @@
+// ─── Section header pattern — portfolio numbered style ────────────────────────
+@use '../tokens/colors' as *;
+@use '../tokens/typography' as *;
+@use '../tokens/spacing' as *;
+
+// Numbered micro-label above heading: "— 002 —" or just "002"
+@mixin section-num {
+  font-size: $t-xs;
+  color: $on-dark-faded;
+  letter-spacing: $track-mark;
+  text-transform: uppercase;
+  font-variant-numeric: tabular-nums;
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+
+  &::before {
+    content: '—';
+    opacity: 0.4;
+  }
+}
+
+// Section heading — weight 400, snug tracking, generous size
+@mixin section-title {
+  font-size: $t-xl;
+  font-weight: $w-regular;
+  color: $on-dark;
+  letter-spacing: $track-snug;
+  line-height: $lh-snug;
+}

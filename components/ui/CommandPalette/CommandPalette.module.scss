@@ -1,0 +1,258 @@
+@use '../../../styles/tokens/colors' as *;
+@use '../../../styles/tokens/typography' as *;
+@use '../../../styles/tokens/spacing' as *;
+@use '../../../styles/mixins/animations' as *;
+@use '../../../styles/mixins/glass' as *;
+
+.backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 300;
+  background: rgba(0, 0, 0, 0.50);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+
+// ── Palette container ─────────────────────────────────────────────────────────
+.palette {
+  position: fixed;
+  top: 20vh;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 301;
+  width: min(540px, calc(100vw - 32px));
+  border-radius: $radius-md;
+  background: var(--surface-panel);
+  border: 1px solid $line;
+  box-shadow:
+    0 0 0 1px rgba(255, 249, 240, 0.04),
+    0 24px 80px rgba(0, 0, 0, 0.70),
+    0 8px 24px rgba(0, 0, 0, 0.40);
+  overflow: hidden;
+}
+
+// ── Search input row ──────────────────────────────────────────────────────────
+.inputRow {
+  display: flex;
+  align-items: center;
+  gap: $space-3;
+  padding: 0 $space-5;
+  height: 56px;
+  border-bottom: 1px solid $line-soft;
+}
+
+.searchIcon {
+  font-size: $t-md;
+  color: $on-dark-faded;
+  flex-shrink: 0;
+  line-height: 1;
+}
+
+.input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  font-family: $font-sans;
+  font-size: $t-base;
+  color: $on-dark;
+  letter-spacing: 0.01em;
+
+  &::placeholder { color: $on-dark-faded; }
+}
+
+.inputMeta {
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+  flex-shrink: 0;
+}
+
+.themeIndicator {
+  font-size: 13px;
+  color: $on-dark-faded;
+  opacity: 0.6;
+  line-height: 1;
+}
+
+.escHint {
+  font-size: 10px;
+  color: $on-dark-faded;
+  background: rgba(255, 249, 240, 0.05);
+  border: 1px solid $line-soft;
+  border-radius: 3px;
+  padding: 2px 5px;
+  font-family: $font-mono;
+}
+
+.closeBtn {
+  width: 26px;
+  height: 26px;
+  border-radius: $radius-sm;
+  border: 1px solid $line-soft;
+  background: transparent;
+  color: $on-dark-faded;
+  font-size: 11px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  @include transition(all, 160ms, $ease-settle);
+
+  &:hover {
+    background: rgba(255, 249, 240, 0.07);
+    border-color: $line;
+    color: $on-dark-soft;
+  }
+}
+
+// ── Results list ──────────────────────────────────────────────────────────────
+.results {
+  padding: $space-2 0;
+  max-height: min(480px, calc(80vh - 130px));
+  overflow-y: auto;
+
+  scrollbar-width: thin;
+  scrollbar-color: $line-soft transparent;
+  &::-webkit-scrollbar       { width: 3px; }
+  &::-webkit-scrollbar-thumb { background: $line-soft; border-radius: 2px; }
+}
+
+// Category group
+.group {
+  &:not(:first-child) { margin-top: $space-1; }
+}
+
+.groupLabel {
+  font-size: 9px;
+  font-family: $font-mono;
+  color: $on-dark-faded;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: $space-2 $space-5 $space-1;
+  opacity: 0.6;
+}
+
+.result {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: $space-3;
+  padding: $space-2_5 $space-5;
+  text-align: left;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  @include transition(background, 140ms, $ease-settle);
+
+  &:hover, &.resultFocused {
+    background: rgba(255, 249, 240, 0.05);
+
+    .resultArrow { opacity: 1; transform: translateX(0); }
+    .resultLabel { color: $on-dark; }
+  }
+}
+
+.resultActive {
+  .resultNum { color: $accent-text !important; }
+}
+
+.resultNum {
+  font-size: $t-xs;
+  color: $on-dark-faded;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: $track-wide;
+  min-width: 20px;
+  flex-shrink: 0;
+  text-align: center;
+}
+
+.resultLabel {
+  flex: 1;
+  font-size: $t-sm;
+  color: $on-dark-soft;
+  letter-spacing: 0.01em;
+  @include transition(color, 140ms, $ease-settle);
+}
+
+.resultHint {
+  font-size: 10px;
+  color: $on-dark-faded;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  font-family: $font-mono;
+  flex-shrink: 0;
+}
+
+.shortcutBadge {
+  font-size: 10px;
+  color: $on-dark-faded;
+  background: rgba(255, 249, 240, 0.05);
+  border: 1px solid $line-soft;
+  border-radius: 3px;
+  padding: 1px 5px;
+  font-family: $font-mono;
+  letter-spacing: 0.04em;
+  flex-shrink: 0;
+}
+
+.resultArrow {
+  font-size: $t-xs;
+  color: $on-dark-faded;
+  opacity: 0;
+  transform: translateX(-4px);
+  @include transition(opacity transform, 160ms, $ease-settle);
+}
+
+.empty {
+  padding: $space-8 $space-5;
+  text-align: center;
+  font-size: $t-sm;
+  color: $on-dark-faded;
+  letter-spacing: 0.02em;
+}
+
+// ── Footer ────────────────────────────────────────────────────────────────────
+.footer {
+  display: flex;
+  align-items: center;
+  gap: $space-5;
+  padding: $space-3 $space-5;
+  border-top: 1px solid $line-soft;
+  font-size: 10px;
+  color: $on-dark-faded;
+  letter-spacing: 0.04em;
+
+  kbd {
+    font-size: 10px;
+    color: $on-dark-subtle;
+    background: rgba(255, 249, 240, 0.05);
+    border: 1px solid $line-soft;
+    border-radius: 3px;
+    padding: 1px 4px;
+    font-family: $font-mono;
+    margin-right: 4px;
+  }
+}
+
+.footerRight {
+  margin-left: auto;
+  font-family: $font-mono;
+  opacity: 0.5;
+}
+
+// ── Mobile ────────────────────────────────────────────────────────────────────
+@media (max-width: 767px) {
+  .palette {
+    top: auto;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    transform: none;
+    width: 100%;
+    border-radius: $radius-md $radius-md 0 0;
+  }
+
+  .footer { display: none; }
+}

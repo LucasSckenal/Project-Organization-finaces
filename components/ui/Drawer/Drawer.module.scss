@@ -1,0 +1,95 @@
+@use '../../../styles/tokens/colors' as *;
+@use '../../../styles/tokens/typography' as *;
+@use '../../../styles/tokens/spacing' as *;
+@use '../../../styles/mixins/animations' as *;
+
+.backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+}
+
+.drawer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 201;
+  display: flex;
+  flex-direction: column;
+  background: var(--surface-panel);
+  border-left: 1px solid var(--line-soft);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  overflow: hidden;
+}
+
+.header {
+  height: 64px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 $space-6;
+  border-bottom: 1px solid $line-soft;
+}
+
+.title {
+  font-size: $t-sm;
+  font-weight: $w-regular;
+  color: $on-dark;
+  letter-spacing: $track-wide;
+  text-transform: uppercase;
+}
+
+.closeBtn {
+  width: 28px;
+  height: 28px;
+  border-radius: $radius-sm;
+  border: 1px solid $line-soft;
+  background: transparent;
+  color: $on-dark-faded;
+  font-size: 11px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  @include transition(all, 200ms, $ease-settle);
+
+  &:hover {
+    background: rgba(255, 249, 240, 0.06);
+    color: $on-dark;
+    border-color: $line;
+  }
+}
+
+.body {
+  flex: 1;
+  overflow-y: auto;
+  padding: $space-6;
+
+  &::-webkit-scrollbar { width: 4px; }
+  &::-webkit-scrollbar-track { background: transparent; }
+  &::-webkit-scrollbar-thumb {
+    background: $line-soft;
+    border-radius: $radius-full;
+  }
+}
+
+// Form primitives live in app/globals.scss as global classes
+
+// ── Mobile — bottom sheet ─────────────────────────────────────────────────────
+@media (max-width: 767px) {
+  .drawer {
+    left: 0;
+    top: auto;           // detach from top — becomes a sheet from the bottom
+    max-height: 92vh;
+    overflow: hidden;
+    border-left: none;
+    border-top: 1px solid $line-soft;
+    border-radius: $radius-md $radius-md 0 0;
+  }
+}

@@ -1,0 +1,104 @@
+﻿@use '../../../styles/tokens/colors' as *;
+@use '../../../styles/tokens/spacing' as *;
+@use '../../../styles/mixins/glass' as *;
+@use '../../../styles/mixins/animations' as *;
+
+.card {
+  position: relative;
+  @include glass-card;
+  overflow: hidden;
+
+  // Top-light shine strip
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(255, 249, 240, 0.08) 30%,
+      rgba(255, 249, 240, 0.12) 50%,
+      rgba(255, 249, 240, 0.08) 70%,
+      transparent 100%
+    );
+  }
+
+  // Hover glow bloomer
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    opacity: 0;
+    background: radial-gradient(
+      ellipse 80% 60% at 50% 0%,
+      rgba(155, 58, 74, 0.06) 0%,
+      transparent 70%
+    );
+    transition: opacity $duration-slow $ease-expo-out;
+    pointer-events: none;
+  }
+
+  &:hover::after {
+    opacity: 1;
+  }
+}
+
+// Size variants
+.sizeSm   { padding: $space-4 $space-5; }
+.sizeMd   { padding: $space-6 $space-6; }
+.sizeLg   { padding: $space-8 $space-8; }
+.sizeAuto { padding: 0; }
+
+// Color variants
+.variantDefault {
+  background: rgba(19, 17, 8, 0.65);
+}
+
+.variantElevated {
+  @include glass-elevated;
+}
+
+.variantAccent {
+  background: rgba(155, 58, 74, 0.08);
+  border-color: rgba(155, 58, 74, 0.18);
+}
+
+.variantGold {
+  background: rgba(196, 168, 130, 0.06);
+  border-color: rgba(196, 168, 130, 0.15);
+}
+
+// Hover interactive variant
+.interactive {
+  cursor: pointer;
+  transition:
+    transform $duration-slow $ease-expo-out,
+    box-shadow $duration-slow $ease-expo-out,
+    border-color $duration-slow $ease-expo-out;
+
+  &:hover {
+    transform: translateY(-2px);
+    border-color: $line;
+    box-shadow:
+      0 0 0 1px rgba(255, 249, 240, 0.03) inset,
+      0 32px 64px -16px rgba(0, 0, 0, 0.60),
+      0 0 40px -10px rgba(155, 58, 74, 0.08);
+  }
+
+  &:active {
+    transform: translateY(0px);
+    transition-duration: 120ms;
+  }
+}
+
+// Loading shimmer state
+.loading {
+  @include shimmer-effect;
+  background-size: 400% 100%;
+
+  * { opacity: 0; }
+}

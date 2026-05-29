@@ -1,0 +1,256 @@
+@use '../../../styles/mixins/animations' as *;
+
+// ── Root container ────────────────────────────────────────────────────────────
+.root {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+// ── 1. Base void ──────────────────────────────────────────────────────────────
+.void {
+  position: absolute;
+  inset: 0;
+  background: var(--bg);
+  transition: background 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+// ── 2. Directional gradients — cinema lighting ────────────────────────────────
+// Three linear beams: top-left sweep, bottom-right pool, and a top scrim.
+// Together they give the scene a sense of a light source off-screen left.
+.gradient {
+  position: absolute;
+  inset: 0;
+  background:
+    // Top-left corner beam — main directional light source
+    linear-gradient(
+      138deg,
+      rgba(3, 2, 1, 0.62) 0%,
+      rgba(3, 2, 1, 0.18) 38%,
+      transparent        55%
+    ),
+    // Bottom-right shadow pool — depth
+    linear-gradient(
+      318deg,
+      rgba(2, 1, 0, 0.55) 0%,
+      rgba(2, 1, 0, 0.15) 35%,
+      transparent        50%
+    ),
+    // Top edge scrim — keeps header area dark and cinematic
+    linear-gradient(
+      180deg,
+      rgba(1, 0, 0, 0.60) 0%,
+      rgba(1, 0, 0, 0.18) 12%,
+      transparent        28%
+    ),
+    // Bottom edge bleed — anchors the bottom of the frame
+    linear-gradient(
+      0deg,
+      rgba(1, 0, 0, 0.48) 0%,
+      rgba(1, 0, 0, 0.10) 18%,
+      transparent        32%
+    );
+  transition: opacity 0.5s ease;
+}
+
+// ── 3 & 4. Grain texture — two layers for depth ───────────────────────────────
+// Coarse layer: visible film grain
+.grain {
+  position: absolute;
+  inset: -50%;
+  width: 200%;
+  height: 200%;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+  background-size: 280px 280px;
+  opacity: 0.072;
+  mix-blend-mode: overlay;
+  pointer-events: none;
+  animation: grain-drift 8s steps(2) infinite;
+}
+
+// Fine layer: micro-texture adds sharpness
+.grainFine {
+  position: absolute;
+  inset: -50%;
+  width: 200%;
+  height: 200%;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.90' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+  background-size: 140px 140px;
+  opacity: 0.035;
+  mix-blend-mode: screen;
+  pointer-events: none;
+  animation: grain-drift 5s steps(3) infinite reverse;
+}
+
+@keyframes grain-drift {
+  0%   { transform: translate(0, 0); }
+  10%  { transform: translate(-2%, -3%); }
+  20%  { transform: translate(3%, 2%); }
+  30%  { transform: translate(-1%, 4%); }
+  40%  { transform: translate(2%, -2%); }
+  50%  { transform: translate(-3%, 1%); }
+  60%  { transform: translate(1%, 3%); }
+  70%  { transform: translate(-2%, -1%); }
+  80%  { transform: translate(4%, 2%); }
+  90%  { transform: translate(-1%, -3%); }
+  100% { transform: translate(0, 0); }
+}
+
+// ── 5. Ambient orbs ───────────────────────────────────────────────────────────
+.orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(90px);
+  will-change: transform;   // promotes to own compositor layer for parallax
+  transform: translateZ(0); // force GPU
+}
+
+// Shu-iro (cinnabar red) — top-left, behind the sidebar
+.orbAccent {
+  width: 680px;
+  height: 680px;
+  top: -260px;
+  left: -140px;
+  background: radial-gradient(
+    circle,
+    rgba(140, 42, 31, 0.22) 0%,
+    rgba(100, 28, 18, 0.10) 45%,
+    transparent 70%
+  );
+  animation: float-slow 20s ease-in-out infinite;
+}
+
+// Ko-iro (amber) — bottom-right, warms the lower content
+.orbGold {
+  width: 560px;
+  height: 560px;
+  bottom: -180px;
+  right: -80px;
+  background: radial-gradient(
+    circle,
+    rgba(200, 130, 55, 0.14) 0%,
+    rgba(160, 100, 40, 0.06) 50%,
+    transparent 70%
+  );
+  animation: float-slow 25s ease-in-out infinite reverse;
+  animation-delay: -10s;
+}
+
+// Deep void — center-right, creates contrast tension
+.orbDeep {
+  width: 500px;
+  height: 500px;
+  top: 25%;
+  right: 10%;
+  background: radial-gradient(
+    circle,
+    rgba(6, 5, 8, 0.45) 0%,
+    rgba(4, 3, 6, 0.20) 45%,
+    transparent 70%
+  );
+  animation: pulse-soft 18s ease-in-out infinite;
+  animation-delay: -6s;
+  filter: blur(100px);
+}
+
+// ── 7. Scan line ──────────────────────────────────────────────────────────────
+.scanLine {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 249, 240, 0.04) 20%,
+    rgba(255, 249, 240, 0.07) 50%,
+    rgba(255, 249, 240, 0.04) 80%,
+    transparent 100%
+  );
+  top: 0;
+  animation: scan 14s linear infinite;
+  opacity: 0.6;
+}
+
+// ── 8. Vignette — strong radial darken ───────────────────────────────────────
+// Multi-stop to give a more dramatic "lens" feel
+.vignette {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    ellipse 88% 82% at 52% 42%,
+    transparent      20%,
+    rgba(2,1,0,0.22) 50%,
+    rgba(1,0,0,0.55) 72%,
+    rgba(1,0,0,0.82) 100%
+  );
+  transition: opacity 0.5s ease;
+}
+
+// ── 9. Corner pools ──────────────────────────────────────────────────────────
+// Extra darkness in all four corners — reinforces the directional feel
+.vignetteCorners {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at   0%   0%, rgba(1,0,0,0.70) 0%, transparent 30%),
+    radial-gradient(circle at 100%   0%, rgba(1,0,0,0.55) 0%, transparent 26%),
+    radial-gradient(circle at   0% 100%, rgba(1,0,0,0.60) 0%, transparent 28%),
+    radial-gradient(circle at 100% 100%, rgba(1,0,0,0.65) 0%, transparent 30%);
+}
+
+// ── Light theme overrides ─────────────────────────────────────────────────────
+:global([data-theme="light"]) {
+  .gradient {
+    background:
+      linear-gradient(
+        138deg,
+        rgba(180, 165, 145, 0.28) 0%,
+        transparent 45%
+      ),
+      linear-gradient(
+        318deg,
+        rgba(160, 148, 130, 0.20) 0%,
+        transparent 40%
+      ),
+      linear-gradient(
+        180deg,
+        rgba(150, 138, 120, 0.22) 0%,
+        transparent 25%
+      );
+  }
+
+  .grain    { opacity: 0.018; }
+  .grainFine { opacity: 0.010; }
+
+  .orbAccent {
+    background: radial-gradient(circle, rgba(140,42,31,0.06) 0%, transparent 70%);
+  }
+  .orbGold {
+    background: radial-gradient(circle, rgba(200,160,100,0.08) 0%, transparent 70%);
+  }
+  .orbDeep {
+    background: radial-gradient(circle, rgba(180,172,160,0.12) 0%, transparent 70%);
+  }
+
+  .vignette {
+    background: radial-gradient(
+      ellipse 90% 85% at 52% 42%,
+      transparent 30%,
+      rgba(180,165,148,0.18) 60%,
+      rgba(160,148,132,0.38) 100%
+    );
+  }
+
+  .vignetteCorners {
+    background:
+      radial-gradient(circle at   0%   0%, rgba(150,135,118,0.28) 0%, transparent 28%),
+      radial-gradient(circle at 100%   0%, rgba(150,135,118,0.22) 0%, transparent 24%),
+      radial-gradient(circle at   0% 100%, rgba(150,135,118,0.24) 0%, transparent 26%),
+      radial-gradient(circle at 100% 100%, rgba(150,135,118,0.26) 0%, transparent 28%);
+  }
+
+  .scanLine { opacity: 0; }
+}

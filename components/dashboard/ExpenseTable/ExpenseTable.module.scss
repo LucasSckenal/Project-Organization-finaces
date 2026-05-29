@@ -1,0 +1,667 @@
+﻿@use '../../../styles/tokens/colors' as *;
+@use '../../../styles/tokens/typography' as *;
+@use '../../../styles/tokens/spacing' as *;
+@use '../../../styles/mixins/glass' as *;
+@use '../../../styles/mixins/animations' as *;
+
+.section {
+  padding: $space-8;
+  padding-top: 0;
+}
+
+.header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-bottom: $space-8;
+}
+
+.titleArea {
+  display: flex;
+  flex-direction: column;
+  gap: $space-2;
+}
+
+.sectionTag {
+  font-size: $t-xs;
+  color: $on-dark-faded;
+  letter-spacing: $track-mark;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+
+  &::before {
+    content: '';
+    display: inline-block;
+    width: 16px;
+    height: 1px;
+    background: currentColor;
+  }
+}
+
+.sectionTitle {
+  font-size: $t-lg;
+  font-weight: $w-thin;
+  color: $on-dark;
+  letter-spacing: $track-snug;
+}
+
+.headerActions {
+  display: flex;
+  align-items: center;
+  gap: $space-3;
+}
+
+.addBtn {
+  display: flex;
+  align-items: center;
+  gap: $space-1_5;
+  height: 30px;
+  padding: 0 $space-3;
+  border-radius: $radius-sm;
+  border: 1px solid $line-soft;
+  background: rgba(255, 249, 240, 0.04);
+  font-size: $t-xs;
+  color: $on-dark-soft;
+  letter-spacing: $track-wide;
+  cursor: pointer;
+  @include transition(all, 200ms, $ease-settle);
+
+  span { color: $accent-text; font-size: 14px; line-height: 1; }
+
+  &:hover {
+    background: rgba(255, 249, 240, 0.07);
+    border-color: $line;
+  }
+}
+
+.exportBtn {
+  display: flex;
+  align-items: center;
+  gap: $space-1_5;
+  height: 30px;
+  padding: 0 $space-3;
+  border-radius: $radius-sm;
+  border: 1px solid $line-soft;
+  background: transparent;
+  font-size: $t-xs;
+  color: $on-dark-faded;
+  letter-spacing: $track-wide;
+  cursor: pointer;
+  @include transition(all, 200ms, $ease-settle);
+
+  &:hover {
+    background: rgba(255, 249, 240, 0.05);
+    border-color: $line;
+    color: $on-dark-soft;
+  }
+}
+
+.viewAll {
+  font-size: $t-xs;
+  color: $on-dark-faded;
+  letter-spacing: $track-wide;
+  display: flex;
+  align-items: center;
+  gap: $space-1_5;
+  @include transition(color, $duration-normal);
+
+  &:hover { color: $on-dark-soft; }
+
+  &::after {
+    content: '→';
+    font-size: 0.9em;
+  }
+}
+
+// ── Table ──────────────────────────────────────────────────────────────────────
+.tableCard {
+  @include glass-card;
+  overflow: hidden;
+}
+
+// ── Filter bar ────────────────────────────────────────────────────────────────
+.filterBar {
+  display: flex;
+  align-items: center;
+  gap: $space-3;
+  padding: $space-3 $space-5;
+  border-bottom: 1px solid $line-soft;
+  flex-wrap: wrap;
+}
+
+.searchWrap {
+  flex: 1;
+  min-width: 150px;
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+  background: rgba(255, 249, 240, 0.04);
+  border: 1px solid $line-soft;
+  border-radius: $radius-sm;
+  padding: 0 $space-3;
+  height: 32px;
+  @include transition(border-color, 160ms, $ease-settle);
+
+  &:focus-within { border-color: $line; }
+}
+
+.searchIcon {
+  font-size: 15px;
+  color: $on-dark-faded;
+  flex-shrink: 0;
+  line-height: 1;
+}
+
+.searchInput {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  font-size: $t-xs;
+  color: $on-dark;
+  font-family: $font-sans;
+  min-width: 0;
+
+  &::placeholder { color: $on-dark-faded; }
+}
+
+.clearBtn {
+  font-size: 9px;
+  color: $on-dark-faded;
+  flex-shrink: 0;
+  cursor: pointer;
+  padding: 2px;
+  line-height: 1;
+  @include transition(color, 140ms, $ease-settle);
+
+  &:hover { color: $on-dark-soft; }
+}
+
+.filterGroup {
+  display: flex;
+  gap: 2px;
+  background: rgba(255, 249, 240, 0.03);
+  border: 1px solid $line-soft;
+  border-radius: $radius-sm;
+  padding: 2px;
+  flex-shrink: 0;
+}
+
+.filterBtn {
+  height: 26px;
+  padding: 0 $space-3;
+  border-radius: calc(#{$radius-sm} - 2px);
+  font-size: $t-xs;
+  letter-spacing: 0.02em;
+  color: $on-dark-faded;
+  cursor: pointer;
+  @include transition(all, 160ms, $ease-settle);
+
+  &:hover { color: $on-dark-soft; }
+}
+
+.filterBtnActive {
+  background: rgba(255, 249, 240, 0.07);
+  color: $on-dark-soft;
+}
+
+.categorySelect {
+  height: 32px;
+  background: rgba(255, 249, 240, 0.04);
+  border: 1px solid $line-soft;
+  border-radius: $radius-sm;
+  color: $on-dark-soft;
+  font-family: $font-sans;
+  font-size: $t-xs;
+  padding: 0 $space-3;
+  outline: none;
+  cursor: pointer;
+  @include transition(border-color, 160ms, $ease-settle);
+
+  option { background: #111; }
+
+  &:focus { border-color: $line; }
+}
+
+.tableHeader {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr 56px;
+  padding: $space-3 $space-6;
+  border-bottom: 1px solid $line-soft;
+  gap: $space-4;
+}
+
+.th {
+  font-size: $t-xs;
+  color: $on-dark-faded;
+  text-transform: uppercase;
+  letter-spacing: $track-mark;
+  font-weight: $w-regular;
+}
+
+.thRight {
+  text-align: right;
+}
+
+// ── Row ────────────────────────────────────────────────────────────────────────
+.row {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr 56px;
+  padding: $space-4 $space-6;
+  gap: $space-4;
+  border-bottom: 1px solid $line-soft;
+  align-items: center;
+  position: relative;
+  @include transition(background, $duration-normal, $ease-expo-out);
+
+  &:last-child { border-bottom: none; }
+
+  &:hover {
+    background: rgba(255, 249, 240, 0.02);
+    .rowAccent  { opacity: 1; }
+    .editBtn    { opacity: 1; }
+    .deleteBtn  { opacity: 1; }
+  }
+}
+
+.rowDeleting { opacity: 0.4; pointer-events: none; }
+
+// Left accent on hover
+.rowAccent {
+  position: absolute;
+  left: 0;
+  top: 8px;
+  bottom: 8px;
+  width: 2px;
+  background: $accent;
+  border-radius: 0 2px 2px 0;
+  opacity: 0;
+  @include transition(opacity, $duration-normal);
+}
+
+.merchant {
+  display: flex;
+  align-items: center;
+  gap: $space-3;
+}
+
+.merchantIcon {
+  width: 32px;
+  height: 32px;
+  border-radius: $radius-md;
+  background: rgba(255, 249, 240, 0.05);
+  border: 1px solid $line-soft;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: $t-xs;
+  color: $on-dark-faded;
+  flex-shrink: 0;
+  font-family: $font-sans;
+}
+
+.merchantName {
+  font-size: $t-sm;
+  color: $on-dark;
+  font-weight: $w-light;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.merchantNote {
+  font-size: $t-xs;
+  color: $on-dark-faded;
+  margin-top: 1px;
+  font-style: italic;
+}
+
+// Category badge
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px $space-2;
+  border-radius: $radius-full;
+  font-size: $t-xs;
+  letter-spacing: $track-wide;
+  font-weight: $w-regular;
+  white-space: nowrap;
+  border: 1px solid transparent;
+}
+
+.badgeDining       { color: #c4a882; background: rgba(196, 168, 130, 0.08); border-color: rgba(196, 168, 130, 0.15); }
+.badgeInvestment   { color: #7ab990; background: rgba(74, 124, 89, 0.10);   border-color: rgba(74, 124, 89, 0.20); }
+.badgeSubscriptions{ color: #857e74; background: rgba(107, 101, 96, 0.10);  border-color: rgba(107, 101, 96, 0.20); }
+.badgeIncome       { color: #7ab990; background: rgba(74, 124, 89, 0.10);   border-color: rgba(74, 124, 89, 0.20); }
+.badgeHousing      { color: #857e74; background: rgba(107, 101, 96, 0.10);  border-color: rgba(107, 101, 96, 0.20); }
+.badgeGroceries    { color: #c4a882; background: rgba(196, 168, 130, 0.08); border-color: rgba(196, 168, 130, 0.15); }
+.badgeShopping     { color: #c07070; background: rgba(139, 58, 58, 0.10);   border-color: rgba(139, 58, 58, 0.20); }
+.badgeUtilities    { color: #6b6560; background: rgba(78, 74, 68, 0.12);    border-color: rgba(78, 74, 68, 0.20); }
+
+// Date
+.date {
+  font-size: $t-xs;
+  color: $on-dark-faded;
+  font-family: $font-mono;
+  letter-spacing: 0.02em;
+}
+
+// Amount
+.amount {
+  font-size: $t-sm;
+  font-family: $font-mono;
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+  font-weight: $w-light;
+  letter-spacing: 0.01em;
+}
+
+.amountExpense { color: $on-dark-soft; }
+.amountIncome  { color: $positive-text; }
+
+// ── Row action buttons ────────────────────────────────────────────────────────
+.rowActions {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.editBtn {
+  width: 24px;
+  height: 24px;
+  border-radius: $radius-sm;
+  border: 1px solid transparent;
+  background: transparent;
+  color: $on-dark-faded;
+  font-size: 13px;
+  cursor: pointer;
+  opacity: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  @include transition(all, 180ms, $ease-settle);
+
+  &:hover {
+    background: rgba(255, 249, 240, 0.07);
+    border-color: $line-soft;
+    color: $on-dark-soft;
+  }
+}
+
+.deleteBtn {
+  width: 24px;
+  height: 24px;
+  border-radius: $radius-sm;
+  border: 1px solid transparent;
+  background: transparent;
+  color: $on-dark-faded;
+  font-size: 9px;
+  cursor: pointer;
+  opacity: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  @include transition(all, 180ms, $ease-settle);
+
+  &:hover {
+    background: rgba(139, 58, 58, 0.15);
+    border-color: rgba(139, 58, 58, 0.3);
+    color: $negative-text;
+  }
+}
+
+// ── Mobile ────────────────────────────────────────────────────────────────────
+@media (max-width: 767px) {
+  .section {
+    padding: $space-5;
+    padding-top: 0;
+  }
+
+  .header {
+    flex-wrap: wrap;
+    gap: $space-3;
+    align-items: flex-start;
+    margin-bottom: $space-6;
+  }
+
+  // Filter bar: stack vertically
+  .filterBar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: $space-2;
+    padding: $space-3 $space-4;
+  }
+
+  .searchWrap { min-width: unset; }
+
+  .categorySelect { width: 100%; }
+
+  .tableHeader {
+    grid-template-columns: 1fr auto 56px;
+    padding: $space-3 $space-4;
+  }
+
+  // Hide category & date columns on mobile
+  .tableHeader .th:nth-child(2),
+  .tableHeader .th:nth-child(3) {
+    display: none;
+  }
+
+  .row {
+    grid-template-columns: 1fr auto 56px;
+    padding: $space-3 $space-4;
+    gap: $space-3;
+  }
+
+  // Hide category (col 2) and date (col 3) cells in rows
+  .row > *:nth-child(3),
+  .row > *:nth-child(4) {
+    display: none;
+  }
+
+  // Always show action buttons on touch devices
+  .editBtn, .deleteBtn { opacity: 1; }
+
+  .merchantName {
+    font-size: $t-xs;
+  }
+}
+
+// ── Select mode ───────────────────────────────────────────────────────────────
+.selectAllBtn {
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+  height: 32px;
+  padding: 0 $space-3;
+  border-radius: $radius-sm;
+  border: 1px solid $line-soft;
+  background: transparent;
+  font-size: $t-xs;
+  color: $on-dark-faded;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  @include transition(all, 160ms, $ease-settle);
+
+  &:hover {
+    background: rgba(255, 249, 240, 0.05);
+    color: $on-dark-soft;
+  }
+}
+
+.rowSelectMode {
+  cursor: pointer;
+  user-select: none;
+
+  &:hover { background: rgba(255, 249, 240, 0.03) !important; }
+}
+
+.rowSelected {
+  background: rgba(140, 42, 31, 0.06) !important;
+}
+
+.rowAccentSelected {
+  opacity: 1 !important;
+}
+
+.merchantIconSelected {
+  background: rgba(140, 42, 31, 0.15) !important;
+  border-color: rgba(140, 42, 31, 0.3) !important;
+  color: $accent-text !important;
+  font-size: 14px !important;
+}
+
+// ── Delete confirm buttons ────────────────────────────────────────────────────
+.deleteConfirmBtn {
+  width: 24px;
+  height: 24px;
+  border-radius: $radius-sm;
+  border: 1px solid rgba(74, 124, 89, 0.35);
+  background: rgba(74, 124, 89, 0.12);
+  color: $positive-text;
+  font-size: 11px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  @include transition(all, 150ms, $ease-settle);
+  &:hover { background: rgba(74, 124, 89, 0.22); }
+}
+
+.deleteCancelBtn {
+  width: 24px;
+  height: 24px;
+  border-radius: $radius-sm;
+  border: 1px solid $line-soft;
+  background: transparent;
+  color: $on-dark-faded;
+  font-size: 9px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  @include transition(all, 150ms, $ease-settle);
+  &:hover { color: $on-dark-soft; border-color: $line; }
+}
+
+// ── Bulk action bar ───────────────────────────────────────────────────────────
+.bulkBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: $space-3 $space-6;
+  border-top: 1px solid $line-soft;
+  background: rgba(140, 42, 31, 0.05);
+}
+
+.bulkActions {
+  display: flex;
+  align-items: center;
+  gap: $space-3;
+}
+
+.bulkCategorySelect {
+  height: 28px;
+  background: rgba(255, 249, 240, 0.04);
+  border: 1px solid $line-soft;
+  border-radius: $radius-sm;
+  color: $on-dark-soft;
+  font-family: $font-sans;
+  font-size: $t-xs;
+  padding: 0 $space-3;
+  outline: none;
+  cursor: pointer;
+  @include transition(border-color, 160ms, $ease-settle);
+  option { background: #111; }
+  &:focus { border-color: $line; }
+}
+
+.bulkCount {
+  font-size: $t-xs;
+  color: $on-dark-faded;
+  letter-spacing: 0.02em;
+}
+
+.bulkDeleteBtn {
+  height: 28px;
+  padding: 0 $space-4;
+  border-radius: $radius-sm;
+  border: 1px solid rgba(139, 58, 58, 0.4);
+  background: rgba(139, 58, 58, 0.12);
+  font-size: $t-xs;
+  color: $negative-text;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  @include transition(all, 180ms, $ease-settle);
+
+  &:hover:not(:disabled) {
+    background: rgba(139, 58, 58, 0.2);
+    border-color: rgba(139, 58, 58, 0.6);
+  }
+
+  &:disabled { opacity: 0.5; pointer-events: none; }
+}
+
+// ── Load more ─────────────────────────────────────────────────────────────────
+.loadMore {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: $space-4;
+  border-top: 1px solid $line-soft;
+}
+
+.loadMoreBtn {
+  height: 30px;
+  padding: 0 $space-5;
+  border-radius: $radius-sm;
+  border: 1px solid $line-soft;
+  background: transparent;
+  font-size: $t-xs;
+  color: $on-dark-faded;
+  letter-spacing: $track-wide;
+  cursor: pointer;
+  @include transition(all, 180ms, $ease-settle);
+
+  &:hover {
+    background: rgba(255, 249, 240, 0.05);
+    border-color: $line;
+    color: $on-dark-soft;
+  }
+}
+
+// ── Empty state ────────────────────────────────────────────────────────────────
+.emptyState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: $space-3;
+  padding: $space-10 $space-8;
+}
+
+.emptyIcon {
+  font-size: 28px;
+  color: $on-dark-faded;
+  opacity: 0.4;
+}
+
+.emptyText {
+  font-size: $t-sm;
+  color: $on-dark-faded;
+  letter-spacing: 0.02em;
+}
+
+.emptyAction {
+  margin-top: $space-2;
+  font-size: $t-xs;
+  color: $accent-text;
+  letter-spacing: $track-wide;
+  cursor: pointer;
+  opacity: 0.8;
+  @include transition(opacity, 180ms, $ease-settle);
+
+  &:hover { opacity: 1; }
+}

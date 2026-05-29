@@ -1,0 +1,66 @@
+// ─── MA Finance OS — Typography System ───────────────────────────────────────
+// Scale: perfect fourth (×1.333) — from portifolio-rho-rosy-34.vercel.app
+// Fonts: Geist Sans + Geist Mono + Noto Serif JP
+
+$font-sans:   var(--font-inter, 'Inter', system-ui, sans-serif);
+$font-serif:  var(--font-noto, 'Noto Serif JP', serif);
+$font-mono:   'SF Mono', ui-monospace, monospace;
+
+// ── Perfect fourth type scale (1.333) ────────────────────────────────────────
+$t-xs:      0.75rem;     // 12px
+$t-sm:      0.875rem;    // 14px
+$t-base:    1rem;        // 16px
+$t-md:      1.333rem;    // ~21px
+$t-lg:      1.777rem;    // ~28px
+$t-xl:      2.369rem;    // ~38px
+$t-2xl:     3.157rem;    // ~51px
+$t-3xl:     4.209rem;    // ~67px
+$t-display: clamp(3.5rem, 9vw, 7.5rem);
+$t-hero:    clamp(4.5rem, 14vw, 11rem);
+
+// ── Weights ───────────────────────────────────────────────────────────────────
+$w-thin:     100;
+$w-light:    300;
+$w-regular:  400;
+$w-medium:   500;
+
+// ── Line heights ─────────────────────────────────────────────────────────────
+$lh-tight:   1.08;
+$lh-snug:    1.15;
+$lh-normal:  1.5;
+$lh-relaxed: 1.7;
+
+// ── Letter spacing — from portfolio tokens ────────────────────────────────────
+$track-tight:  -0.025em;
+$track-snug:   -0.015em;
+$track-normal: 0em;
+$track-wide:   0.08em;
+$track-mark:   0.22em;     // capslock labels, section tags
+
+// ── Legacy aliases (used by existing components) ─────────────────────────────
+$text-2xs:       $t-xs;
+$text-xs:        $t-xs;
+$text-sm:        $t-sm;
+$text-base:      $t-base;
+$text-lg:        $t-md;
+$text-xl:        $t-md;
+$text-2xl:       $t-lg;
+$text-3xl:       $t-xl;
+
+$weight-thin:    $w-thin;
+$weight-light:   $w-light;
+$weight-regular: $w-regular;
+$weight-medium:  $w-medium;
+
+$leading-tight:  $lh-tight;
+$leading-snug:   $lh-snug;
+$leading-normal: $lh-normal;
+
+$tracking-ultra:  $track-mark;
+$tracking-tightest: $track-tight;
+$tracking-tight:  $track-snug;
+$tracking-normal: $track-normal;
+$tracking-wide:   $track-wide;
+$tracking-wider:  $track-mark;
+
+// CSS custom properties — declared in app/globals.scss

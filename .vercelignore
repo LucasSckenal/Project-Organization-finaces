@@ -1,0 +1,5 @@
+# Firebase Cloud Functions — deployed separately via Firebase CLI, not by Vercel
+functions/
+
+# Local-only
+.env.local

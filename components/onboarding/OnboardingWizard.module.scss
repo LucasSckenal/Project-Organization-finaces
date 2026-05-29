@@ -1,0 +1,241 @@
+@use '../../styles/tokens/colors' as *;
+@use '../../styles/tokens/typography' as *;
+@use '../../styles/tokens/spacing' as *;
+@use '../../styles/mixins/animations' as *;
+@use '../../styles/mixins/glass' as *;
+
+// ── Overlay ───────────────────────────────────────────────────────────────────
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 300;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: $space-6;
+  padding: $space-8 max(24px, 5vw);
+  background: #1A1816;
+  background-image:
+    radial-gradient(ellipse 70% 50% at 50% 0%,   rgba(140,42,31,0.10) 0%, transparent 65%),
+    radial-gradient(ellipse 50% 40% at 50% 100%,  rgba(14,13,11,0.70)  0%, transparent 100%);
+}
+
+.overlayExit {
+  animation: maFadeOut 0.55s cubic-bezier(0.16,1,0.3,1) both;
+  pointer-events: none;
+}
+
+// ── Progress dots ─────────────────────────────────────────────────────────────
+.progress {
+  display: flex;
+  gap: 6px;
+  min-height: 8px;  // keeps layout stable on welcome step (no dots yet)
+}
+
+.dot {
+  width: 6px;
+  height: 6px;
+  border-radius: $radius-full;
+  background: rgba(242,239,233,0.12);
+  @include transition(background, 300ms, $ease-settle);
+}
+
+.dotActive { background: rgba(242,239,233,0.55); }
+.dotDone   { background: $accent-text; }
+
+// ── Card ──────────────────────────────────────────────────────────────────────
+.card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: $space-5;
+  width: 100%;
+  max-width: 420px;
+  // Each step re-renders with a new key — animation replays
+  animation: maFadeRise 0.55s cubic-bezier(0.16,1,0.3,1) both;
+}
+
+// ── Welcome step ──────────────────────────────────────────────────────────────
+.glyph {
+  font-family: $font-serif;
+  font-size: clamp(3.5rem, 10vw, 6rem);
+  font-weight: $w-thin;
+  color: rgba(242,239,233,0.12);
+  line-height: 1;
+  letter-spacing: -0.04em;
+  margin-bottom: calc(-1 * #{$space-3});
+}
+
+// ── Typography ────────────────────────────────────────────────────────────────
+.title {
+  font-family: $font-serif;
+  font-size: clamp(1.6rem, 4vw, 2.4rem);
+  font-weight: $w-thin;
+  color: $on-dark;
+  line-height: 1.18;
+  letter-spacing: -0.02em;
+
+  em {
+    font-style: italic;
+    color: $on-dark-soft;
+  }
+}
+
+.sub {
+  font-size: $t-sm;
+  color: $on-dark-faded;
+  line-height: 1.65;
+  font-weight: $w-light;
+  max-width: 360px;
+}
+
+// ── Buttons ───────────────────────────────────────────────────────────────────
+.btnPrimary {
+  height: 44px;
+  padding: 0 $space-8;
+  border-radius: $radius-sm;
+  background: $on-dark;
+  color: $bg;
+  font-size: $t-sm;
+  font-weight: $w-regular;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  @include transition(all, 200ms, $ease-settle);
+
+  // CSS var resolution for dark bg token
+  background: #F2EFE9;
+  color: #1A1816;
+
+  &:hover:not(:disabled) {
+    background: rgba(242,239,233,0.88);
+    transform: translateY(-1px);
+  }
+
+  &:disabled { opacity: 0.6; cursor: default; }
+}
+
+.btnBack {
+  font-size: $t-xs;
+  color: $on-dark-faded;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  @include transition(color, 180ms, $ease-settle);
+  &:hover { color: $on-dark-soft; }
+}
+
+.rowActions {
+  display: flex;
+  align-items: center;
+  gap: $space-6;
+  margin-top: $space-2;
+}
+
+// ── Currency list ─────────────────────────────────────────────────────────────
+.currencyList {
+  display: flex;
+  flex-direction: column;
+  gap: $space-2;
+  width: 100%;
+  text-align: left;
+}
+
+.currencyItem {
+  display: flex;
+  align-items: center;
+  gap: $space-4;
+  padding: $space-3 $space-4;
+  border-radius: $radius-md;
+  border: 1px solid $line-soft;
+  background: transparent;
+  cursor: pointer;
+  @include transition(all, 180ms, $ease-settle);
+  width: 100%;
+
+  &:hover {
+    background: rgba(242,239,233,0.04);
+    border-color: $line;
+  }
+}
+
+.currencyItemActive {
+  border-color: $accent-text;
+  background: rgba(140,42,31,0.08);
+}
+
+.currencySymbol {
+  font-family: $font-mono;
+  font-size: $t-sm;
+  color: $accent-text;
+  width: 28px;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.currencyInfo {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  text-align: left;
+}
+
+.currencyCode {
+  font-size: $t-xs;
+  font-weight: $w-regular;
+  color: $on-dark;
+  letter-spacing: $track-wide;
+}
+
+.currencyName {
+  font-size: $t-xs;
+  color: $on-dark-faded;
+  font-weight: $w-light;
+}
+
+.currencyCheck {
+  font-size: 11px;
+  color: $accent-text;
+  flex-shrink: 0;
+}
+
+// ── Done step ─────────────────────────────────────────────────────────────────
+.doneIcon {
+  font-size: 2rem;
+  color: $positive-text;
+  line-height: 1;
+}
+
+.doneDetails {
+  display: flex;
+  gap: $space-6;
+  padding: $space-3 $space-5;
+  border: 1px solid $line-soft;
+  border-radius: $radius-sm;
+  background: rgba(242,239,233,0.03);
+}
+
+.doneDetail {
+  font-size: $t-xs;
+  color: $on-dark-faded;
+  letter-spacing: 0.02em;
+
+  strong {
+    color: $on-dark-soft;
+    font-weight: $w-regular;
+  }
+}
+
+// ── Brand mark ────────────────────────────────────────────────────────────────
+.brandMark {
+  position: absolute;
+  bottom: $space-5;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.6875rem;
+  color: rgba(242,239,233,0.14);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}

@@ -1,0 +1,118 @@
+// ─── MA Finance OS — Animation System ────────────────────────────────────────
+// Easing source: portifolio-rho-rosy-34.vercel.app
+
+// ── Easing curves — from portfolio ────────────────────────────────────────────
+$ease-cinema:  cubic-bezier(0.22, 1, 0.36, 1);    // cinematic entrance
+$ease-drift:   cubic-bezier(0.65, 0, 0.35, 1);    // slow drift
+$ease-settle:  cubic-bezier(0.16, 1, 0.30, 1);    // settle into place
+$ease-out:     cubic-bezier(0.33, 1, 0.68, 1);    // general out
+
+// Legacy aliases — used by existing mixins
+$ease-expo-out:   $ease-settle;
+$ease-expo-in:    cubic-bezier(0.7, 0, 0.84, 0);
+$ease-expo-inout: cubic-bezier(0.87, 0, 0.13, 1);
+$ease-spring:     cubic-bezier(0.34, 1.56, 0.64, 1);
+$ease-silk:       $ease-out;
+$ease-cinematic:  $ease-cinema;
+
+// ── Duration tokens — from portfolio ─────────────────────────────────────────
+$dur-fast:     0.4s;
+$dur-base:     0.9s;
+$dur-slow:     1.6s;
+$dur-epic:     2.4s;
+
+// Legacy aliases
+$duration-instant:   80ms;
+$duration-fast:      400ms;
+$duration-normal:    400ms;
+$duration-slow:      900ms;
+$duration-slower:    1600ms;
+$duration-cinematic: 900ms;
+$duration-epic:      2400ms;
+
+// ── Transition mixin ──────────────────────────────────────────────────────────
+@mixin transition($props: all, $duration: $dur-base, $easing: $ease-settle) {
+  transition: $props $duration $easing;
+}
+
+// ── Reveal helpers ────────────────────────────────────────────────────────────
+@mixin reveal-ready {
+  opacity: 0;
+  transform: translateY(24px);
+}
+
+@mixin reveal-done {
+  opacity: 1;
+  transform: translateY(0);
+  transition:
+    opacity $dur-slow $ease-cinema,
+    transform $dur-slow $ease-cinema;
+}
+
+// ── Keyframes ─────────────────────────────────────────────────────────────────
+
+// Ambient float
+@keyframes float-gentle {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-8px); }
+}
+
+@keyframes float-slow {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  33%       { transform: translateY(-12px) rotate(0.5deg); }
+  66%       { transform: translateY(-6px) rotate(-0.3deg); }
+}
+
+// Atmospheric pulse
+@keyframes pulse-glow {
+  0%, 100% { opacity: 0.4; transform: scale(1); }
+  50%       { opacity: 0.7; transform: scale(1.08); }
+}
+
+@keyframes pulse-soft {
+  0%, 100% { opacity: 0.3; }
+  50%       { opacity: 0.6; }
+}
+
+// Shimmer — loading skeleton
+@keyframes shimmer {
+  0%   { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+@mixin shimmer-effect {
+  background: linear-gradient(
+    90deg,
+    rgba(242, 239, 233, 0.03) 25%,
+    rgba(242, 239, 233, 0.07) 50%,
+    rgba(242, 239, 233, 0.03) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 2.4s $ease-silk infinite;
+}
+
+// Cinematic reveal
+@keyframes cinematic-reveal {
+  0%   { opacity: 0; transform: translateY(28px); clip-path: inset(0 0 100% 0); }
+  100% { opacity: 1; transform: translateY(0);    clip-path: inset(0 0 0% 0); }
+}
+
+// Mask up — from portfolio (clip-path reveal)
+@keyframes mask-up {
+  from { clip-path: inset(0 0 100% 0); transform: translateY(12px); }
+  to   { clip-path: inset(0 0 0% 0);   transform: translateY(0); }
+}
+
+// Scan line
+@keyframes scan {
+  0%   { transform: translateY(-100%); }
+  100% { transform: translateY(100vh); }
+}
+
+// Progress fill
+@keyframes progress-fill {
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
+}
+
+// CSS custom properties for easing — declared in app/globals.scss

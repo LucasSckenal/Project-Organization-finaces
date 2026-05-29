@@ -1,0 +1,336 @@
+﻿@use '../../../styles/tokens/colors' as *;
+@use '../../../styles/tokens/typography' as *;
+@use '../../../styles/tokens/spacing' as *;
+@use '../../../styles/mixins/glass' as *;
+@use '../../../styles/mixins/animations' as *;
+
+.section {
+  padding: $space-8;
+  padding-top: 0;
+  padding-bottom: $space-20;
+}
+
+.header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-bottom: $space-8;
+}
+
+.addBtn {
+  display: flex;
+  align-items: center;
+  gap: $space-1_5;
+  height: 30px;
+  padding: 0 $space-3;
+  border-radius: $radius-sm;
+  border: 1px solid $line-soft;
+  background: rgba(255, 249, 240, 0.04);
+  font-size: $t-xs;
+  color: $on-dark-soft;
+  letter-spacing: $track-wide;
+  cursor: pointer;
+  @include transition(all, 200ms, $ease-settle);
+
+  span { color: $accent-text; font-size: 14px; line-height: 1; }
+
+  &:hover {
+    background: rgba(255, 249, 240, 0.07);
+    border-color: $line;
+  }
+}
+
+.titleArea {
+  display: flex;
+  flex-direction: column;
+  gap: $space-2;
+}
+
+.sectionTag {
+  font-size: $t-xs;
+  color: $on-dark-faded;
+  letter-spacing: $track-mark;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+
+  &::before {
+    content: '';
+    display: inline-block;
+    width: 16px;
+    height: 1px;
+    background: currentColor;
+  }
+}
+
+.sectionTitle {
+  font-size: $t-lg;
+  font-weight: $w-thin;
+  color: $on-dark;
+  letter-spacing: $track-snug;
+}
+
+// ── Goals grid ─────────────────────────────────────────────────────────────────
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: $space-4;
+}
+
+.card {
+  @include glass-card;
+  padding: $space-6;
+  position: relative;
+  overflow: hidden;
+  @include transition(border-color transform, $duration-slow, $ease-expo-out);
+
+  &:hover {
+    border-color: $line-soft;
+    transform: translateY(-1px);
+    .editBtn, .deleteCardBtn { opacity: 1; }
+  }
+}
+
+.cardTop {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: $space-5;
+}
+
+.emojiArea {
+  display: flex;
+  align-items: center;
+  gap: $space-3;
+}
+
+.emoji {
+  font-size: $t-md;
+  line-height: 1;
+}
+
+.goalInfo {
+  display: flex;
+  flex-direction: column;
+  gap: $space-1;
+}
+
+.goalName {
+  font-size: $t-base;
+  font-weight: $w-light;
+  color: $on-dark;
+  letter-spacing: 0.01em;
+}
+
+.goalCategory {
+  font-size: $t-xs;
+  color: $on-dark-faded;
+  letter-spacing: $track-mark;
+  text-transform: uppercase;
+}
+
+.cardActions {
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+}
+
+.progressPercent {
+  font-size: $t-lg;
+  font-weight: $w-thin;
+  color: $on-dark;
+  font-family: $font-mono;
+  letter-spacing: $track-snug;
+  line-height: 1;
+}
+
+.editBtn {
+  width: 24px;
+  height: 24px;
+  border-radius: $radius-sm;
+  border: 1px solid $line-soft;
+  background: transparent;
+  color: $on-dark-faded;
+  font-size: 12px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  @include transition(all, 180ms, $ease-settle);
+
+  &:hover {
+    background: rgba(255, 249, 240, 0.06);
+    border-color: $line;
+    color: $on-dark-soft;
+  }
+}
+
+.deleteCardBtn {
+  width: 24px;
+  height: 24px;
+  border-radius: $radius-sm;
+  border: 1px solid transparent;
+  background: transparent;
+  color: $on-dark-faded;
+  font-size: 9px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  @include transition(all, 180ms, $ease-settle);
+
+  &:hover {
+    background: rgba(139, 58, 58, 0.15);
+    border-color: rgba(139, 58, 58, 0.3);
+    color: $negative-text;
+  }
+}
+
+.cardDeleting { opacity: 0.4; pointer-events: none; }
+
+// ── Progress bar ─────────────────────────────────────────────────────────────
+.progressSection {
+  margin-bottom: $space-4;
+}
+
+.progressTrack {
+  height: 2px;
+  background: rgba(255, 249, 240, 0.06);
+  border-radius: $radius-full;
+  overflow: hidden;
+  margin-bottom: $space-3;
+}
+
+.progressFill {
+  height: 100%;
+  border-radius: $radius-full;
+  transform-origin: left;
+  animation: progress-fill 1.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: 0.3s;
+}
+
+.progressAmounts {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.amountCurrent {
+  font-size: $t-sm;
+  color: $on-dark;
+  font-family: $font-mono;
+  font-weight: $w-light;
+}
+
+.amountTarget {
+  font-size: $t-xs;
+  color: $on-dark-faded;
+  font-family: $font-mono;
+}
+
+// ── Deadline ─────────────────────────────────────────────────────────────────
+.deadline {
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+  padding-top: $space-3;
+  border-top: 1px solid $line-soft;
+}
+
+.deadlineIcon {
+  font-size: $t-xs;
+  color: $on-dark-faded;
+}
+
+.deadlineText {
+  font-size: $t-xs;
+  color: $on-dark-faded;
+  letter-spacing: 0.02em;
+}
+
+.deadlineRemaining {
+  margin-left: auto;
+  font-size: $t-xs;
+  color: $on-dark-faded;
+  font-family: $font-mono;
+  background: rgba(255, 249, 240, 0.04);
+  padding: 2px 6px;
+  border-radius: $radius-full;
+  border: 1px solid $line-soft;
+}
+
+// ── Deposit button ────────────────────────────────────────────────────────────
+.depositBtn {
+  width: 100%;
+  height: 28px;
+  margin-top: $space-2;
+  border-radius: $radius-sm;
+  border: 1px solid $line-soft;
+  background: transparent;
+  font-size: $t-xs;
+  color: $on-dark-faded;
+  letter-spacing: $track-wide;
+  cursor: pointer;
+  @include transition(all, 180ms, $ease-settle);
+
+  &:hover {
+    background: rgba(74, 124, 89, 0.10);
+    border-color: rgba(74, 124, 89, 0.30);
+    color: $positive-text;
+  }
+}
+
+// ── Mobile ────────────────────────────────────────────────────────────────────
+@media (max-width: 767px) {
+  .section {
+    padding: $space-5;
+    padding-top: 0;
+    padding-bottom: $space-10;
+  }
+
+  .header {
+    flex-wrap: wrap;
+    gap: $space-3;
+    align-items: flex-start;
+    margin-bottom: $space-6;
+  }
+
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+// Color variants based on progress
+.colorWealth  { background: linear-gradient(90deg, #4a7c59, #7ab990); }
+.colorTravel  { background: linear-gradient(90deg, #c4a882, #d4b892); }
+.colorSecurity{ background: linear-gradient(90deg, #857e74, #a09890); }
+.colorProperty{ background: linear-gradient(90deg, #9b3a4a, #b34558); }
+
+// ── Empty state ─────────────────────────────────────────────────────────────
+.emptyState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: $space-3;
+  padding: $space-10 $space-8;
+  border: 1px solid $line-soft;
+  border-radius: $radius-md;
+  background: rgba(255, 249, 240, 0.01);
+}
+
+.emptyIcon    { font-size: 28px; color: $on-dark-faded; opacity: 0.4; }
+.emptyText    { font-size: $t-sm; color: $on-dark-faded; letter-spacing: 0.02em; }
+.emptySubtext { font-size: $t-xs; color: $on-dark-faded; letter-spacing: 0.02em; opacity: 0.7; line-height: $lh-relaxed; text-align: center; max-width: 280px; }
+.emptyAction {
+  margin-top: $space-2;
+  font-size: $t-xs;
+  color: $accent-text;
+  letter-spacing: $track-wide;
+  cursor: pointer;
+  opacity: 0.8;
+  @include transition(opacity, 180ms, $ease-settle);
+  &:hover { opacity: 1; }
+}

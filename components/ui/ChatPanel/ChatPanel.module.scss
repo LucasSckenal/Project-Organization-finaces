@@ -1,0 +1,412 @@
+@use '../../../styles/tokens/colors' as *;
+@use '../../../styles/tokens/typography' as *;
+@use '../../../styles/tokens/spacing' as *;
+@use '../../../styles/mixins/animations' as *;
+
+// ── Backdrop — only visible on mobile ────────────────────────────────────────
+.backdrop {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 18;
+  background: rgba(0, 0, 0, 0.5);
+
+  @media (max-width: 767px) { display: block; }
+}
+
+// ── Panel — slides in from right ──────────────────────────────────────────────
+.panel {
+  position: fixed;
+  top: $topbar-height;
+  right: 0;
+  bottom: 0;
+  width: 380px;
+  z-index: 19;          // above content (10), below sidebar (50) & drawers (200)
+  display: flex;
+  flex-direction: column;
+  background: var(--surface-panel);
+  border-left: 1px solid var(--line-soft);
+  backdrop-filter: blur(24px) saturate(110%);
+  -webkit-backdrop-filter: blur(24px) saturate(110%);
+
+  @media (max-width: 767px) {
+    width: 100%;
+    z-index: 55;         // above sidebar on mobile
+    top: $topbar-height;
+  }
+}
+
+// ── Header ────────────────────────────────────────────────────────────────────
+.header {
+  height: $topbar-height;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 $space-5;
+  border-bottom: 1px solid $line-soft;
+}
+
+.headerLeft {
+  display: flex;
+  align-items: center;
+  gap: $space-3;
+}
+
+.headerIcon {
+  font-size: 14px;
+  color: $accent-text;
+  line-height: 1;
+  opacity: 0.85;
+}
+
+.headerTitles {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.headerTitle {
+  font-size: $t-sm;
+  font-weight: $w-regular;
+  color: $on-dark;
+  letter-spacing: $track-wide;
+  text-transform: uppercase;
+  line-height: 1;
+}
+
+.headerSub {
+  font-size: 10px;
+  color: $on-dark-faded;
+  letter-spacing: $track-mark;
+  text-transform: uppercase;
+  line-height: 1;
+}
+
+.headerActions {
+  display: flex;
+  align-items: center;
+  gap: $space-1_5;
+}
+
+.iconBtn {
+  width: 28px;
+  height: 28px;
+  border-radius: $radius-sm;
+  border: 1px solid $line-soft;
+  background: transparent;
+  color: $on-dark-faded;
+  font-size: 11px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  @include transition(all, 200ms, $ease-settle);
+
+  &:hover { background: rgba(255, 249, 240, 0.06); color: $on-dark-soft; border-color: $line; }
+}
+
+// ── Messages area ─────────────────────────────────────────────────────────────
+.messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: $space-5;
+  display: flex;
+  flex-direction: column;
+  gap: $space-4;
+  scroll-behavior: smooth;
+
+  scrollbar-width: thin;
+  scrollbar-color: $line-soft transparent;
+  &::-webkit-scrollbar       { width: 3px; }
+  &::-webkit-scrollbar-thumb { background: $line-soft; border-radius: 2px; }
+}
+
+// ── Empty / welcome state ─────────────────────────────────────────────────────
+.empty {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: $space-8 $space-5;
+  gap: $space-3;
+}
+
+.emptyGlyph {
+  font-size: 28px;
+  color: $accent-text;
+  opacity: 0.5;
+  margin-bottom: $space-2;
+}
+
+.emptyTitle {
+  font-size: $t-base;
+  font-weight: $w-light;
+  color: $on-dark-soft;
+  letter-spacing: 0.01em;
+  line-height: $lh-snug;
+}
+
+.emptySub {
+  font-size: $t-xs;
+  color: $on-dark-faded;
+  letter-spacing: 0.02em;
+  line-height: $lh-relaxed;
+}
+
+.suggestions {
+  display: flex;
+  flex-direction: column;
+  gap: $space-2;
+  width: 100%;
+  margin-top: $space-3;
+}
+
+.suggestion {
+  width: 100%;
+  padding: $space-3 $space-4;
+  border-radius: $radius-sm;
+  border: 1px solid $line-soft;
+  background: rgba(255, 249, 240, 0.02);
+  font-size: $t-xs;
+  color: $on-dark-mute;
+  text-align: left;
+  cursor: pointer;
+  letter-spacing: 0.02em;
+  font-family: $font-sans;
+  @include transition(all, 180ms, $ease-settle);
+
+  &:hover {
+    border-color: $line;
+    background: rgba(255, 249, 240, 0.05);
+    color: $on-dark-soft;
+  }
+}
+
+// ── Individual messages ───────────────────────────────────────────────────────
+.msg {
+  display: flex;
+  gap: $space-3;
+  align-items: flex-start;
+  max-width: 100%;
+}
+
+.msgUser {
+  flex-direction: row-reverse;
+  align-self: flex-end;
+  max-width: 88%;
+}
+
+.msgAssistant {
+  align-self: flex-start;
+  max-width: 95%;
+}
+
+.msgIcon {
+  font-size: 12px;
+  color: $accent-text;
+  opacity: 0.7;
+  margin-top: 4px;
+  flex-shrink: 0;
+}
+
+.msgBubble {
+  padding: $space-3 $space-4;
+  border-radius: $radius-md;
+  font-size: $t-sm;
+  line-height: $lh-relaxed;
+  letter-spacing: 0.01em;
+  word-break: break-word;
+
+  .msgUser & {
+    background: rgba(140, 42, 31, 0.18);
+    border: 1px solid rgba(140, 42, 31, 0.25);
+    color: $on-dark;
+    border-radius: $radius-md $radius-sm $radius-md $radius-md;
+  }
+
+  .msgAssistant & {
+    background: rgba(255, 249, 240, 0.04);
+    border: 1px solid $line-soft;
+    color: $on-dark-soft;
+    border-radius: $radius-sm $radius-md $radius-md $radius-md;
+  }
+}
+
+// ── Typing indicator ──────────────────────────────────────────────────────────
+.typing {
+  display: inline-flex;
+  gap: 4px;
+  align-items: center;
+  height: 18px;
+
+  span {
+    width: 5px;
+    height: 5px;
+    border-radius: $radius-full;
+    background: $on-dark-faded;
+    animation: typing-bounce 1.2s ease-in-out infinite;
+
+    &:nth-child(2) { animation-delay: 0.2s; }
+    &:nth-child(3) { animation-delay: 0.4s; }
+  }
+}
+
+@keyframes typing-bounce {
+  0%, 60%, 100% { transform: translateY(0); opacity: 0.4; }
+  30%            { transform: translateY(-5px); opacity: 1; }
+}
+
+// ── Input area ────────────────────────────────────────────────────────────────
+.inputArea {
+  flex-shrink: 0;
+  display: flex;
+  align-items: flex-end;
+  gap: $space-2;
+  padding: $space-4 $space-5;
+  border-top: 1px solid $line-soft;
+  background: var(--glass-bg);
+}
+
+.input {
+  flex: 1;
+  min-height: 38px;
+  max-height: 120px;
+  background: rgba(255, 249, 240, 0.05);
+  border: 1px solid $line-soft;
+  border-radius: $radius-md;
+  padding: $space-2_5 $space-4;
+  font-size: $t-sm;
+  color: $on-dark;
+  outline: none;
+  resize: none;
+  font-family: $font-sans;
+  line-height: 1.5;
+  overflow-y: auto;
+  @include transition(border-color, 180ms, $ease-settle);
+
+  &:focus        { border-color: $line; }
+  &::placeholder { color: $on-dark-faded; }
+  &:disabled     { opacity: 0.5; cursor: not-allowed; }
+}
+
+.sendBtn {
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+  border-radius: $radius-md;
+  border: 1px solid $line-soft;
+  background: rgba(255, 249, 240, 0.06);
+  color: $on-dark-soft;
+  font-size: $t-base;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  @include transition(all, 200ms, $ease-settle);
+
+  &:hover:not(:disabled) {
+    background: rgba(140, 42, 31, 0.20);
+    border-color: rgba(140, 42, 31, 0.40);
+    color: $accent-text;
+  }
+
+  &:disabled { opacity: 0.3; cursor: not-allowed; }
+}
+
+// ── Proposed action cards ──────────────────────────────────────────────────────
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: $space-2;
+  margin-top: $space-3;
+}
+
+.actionCard {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: $space-3;
+  padding: $space-3;
+  border-radius: $radius-sm;
+  border: 1px solid rgba(194, 96, 85, 0.25);
+  background: rgba(140, 42, 31, 0.06);
+  @include transition(all, 200ms, $ease-settle);
+}
+
+.actionDone     { border-color: rgba(74, 124, 89, 0.3); background: rgba(74, 124, 89, 0.08); }
+.actionDismissed { opacity: 0.5; border-color: $line-soft; background: transparent; }
+
+.actionInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.actionTitle {
+  font-size: $t-xs;
+  color: $on-dark;
+  font-weight: $w-regular;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.actionDetail {
+  font-size: 11px;
+  color: $on-dark-faded;
+  font-family: $font-mono;
+}
+
+.actionBtns {
+  display: flex;
+  align-items: center;
+  gap: $space-1_5;
+  flex-shrink: 0;
+}
+
+.actionConfirm {
+  height: 26px;
+  padding: 0 $space-3;
+  border-radius: $radius-sm;
+  border: 1px solid rgba(194, 96, 85, 0.4);
+  background: rgba(140, 42, 31, 0.14);
+  font-size: 11px;
+  color: $accent-text;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  @include transition(all, 160ms, $ease-settle);
+
+  &:hover { background: rgba(140, 42, 31, 0.22); }
+}
+
+.actionDismiss {
+  width: 26px;
+  height: 26px;
+  border-radius: $radius-sm;
+  border: 1px solid transparent;
+  background: transparent;
+  color: $on-dark-faded;
+  font-size: 9px;
+  cursor: pointer;
+  @include transition(all, 160ms, $ease-settle);
+
+  &:hover { color: $on-dark-soft; background: rgba(255, 249, 240, 0.06); }
+}
+
+.actionDoneTag {
+  font-size: 11px;
+  color: $positive-text;
+  letter-spacing: 0.02em;
+  flex-shrink: 0;
+}
+
+.actionDismissedTag {
+  font-size: 11px;
+  color: $on-dark-faded;
+  letter-spacing: 0.02em;
+  flex-shrink: 0;
+}

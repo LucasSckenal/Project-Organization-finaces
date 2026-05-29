@@ -1,0 +1,332 @@
+@use '../../../styles/tokens/colors' as *;
+@use '../../../styles/tokens/typography' as *;
+@use '../../../styles/tokens/spacing' as *;
+@use '../../../styles/mixins/animations' as *;
+
+// ── Step 1: Idle / drop zone ──────────────────────────────────────────────────
+.idle {
+  display: flex;
+  flex-direction: column;
+  gap: $space-6;
+}
+
+.dropZone {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: $space-3;
+  padding: $space-10 $space-6;
+  border: 1px dashed $line-soft;
+  border-radius: $radius-md;
+  background: rgba(255, 249, 240, 0.02);
+  cursor: pointer;
+  text-align: center;
+  @include transition(all, 220ms, $ease-settle);
+
+  &:hover {
+    border-color: $line;
+    background: rgba(255, 249, 240, 0.04);
+  }
+}
+
+.dropZoneOver {
+  border-color: $accent-text;
+  background: rgba(194, 96, 85, 0.06);
+}
+
+.dropIcon {
+  font-size: 26px;
+  color: $on-dark-faded;
+  line-height: 1;
+}
+
+.dropTitle {
+  font-size: $t-sm;
+  color: $on-dark-soft;
+  font-weight: $w-light;
+}
+
+.dropSub {
+  font-size: $t-xs;
+  color: $on-dark-faded;
+}
+
+.fileInput { display: none; }
+
+.hint {
+  display: flex;
+  flex-direction: column;
+  gap: $space-2;
+  padding: $space-4;
+  border: 1px solid $line-soft;
+  border-radius: $radius-md;
+  background: rgba(255, 249, 240, 0.02);
+}
+
+.hintTitle {
+  font-size: $t-xs;
+  color: $on-dark-faded;
+  letter-spacing: $track-wide;
+  text-transform: uppercase;
+}
+
+.hintCode {
+  font-size: $t-xs;
+  font-family: $font-mono;
+  color: $on-dark-soft;
+  letter-spacing: 0.02em;
+}
+
+.hintNote {
+  font-size: $t-xs;
+  color: $on-dark-faded;
+  line-height: 1.6;
+}
+
+// ── Step 2: Preview ───────────────────────────────────────────────────────────
+.preview {
+  display: flex;
+  flex-direction: column;
+  gap: $space-4;
+}
+
+.previewSummary {
+  display: flex;
+  gap: $space-2;
+}
+
+.summaryChip {
+  display: inline-flex;
+  align-items: center;
+  height: 24px;
+  padding: 0 $space-3;
+  border-radius: $radius-full;
+  font-size: $t-xs;
+  letter-spacing: 0.02em;
+  border: 1px solid transparent;
+}
+
+.summaryValid {
+  color: $positive-text;
+  background: rgba(61, 107, 80, 0.12);
+  border-color: rgba(61, 107, 80, 0.25);
+}
+
+.summaryInvalid {
+  color: $on-dark-faded;
+  background: rgba(255, 249, 240, 0.04);
+  border-color: $line-soft;
+}
+
+.noValid {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: $space-4;
+  padding: $space-8 $space-4;
+  text-align: center;
+}
+
+.noValidText {
+  font-size: $t-xs;
+  color: $on-dark-faded;
+  line-height: 1.6;
+}
+
+.retryBtn {
+  font-size: $t-xs;
+  color: $accent-text;
+  letter-spacing: $track-wide;
+  cursor: pointer;
+  opacity: 0.8;
+  @include transition(opacity, 180ms, $ease-settle);
+
+  &:hover { opacity: 1; }
+}
+
+// ── Preview table ─────────────────────────────────────────────────────────────
+.previewTable {
+  border: 1px solid $line-soft;
+  border-radius: $radius-md;
+  overflow: hidden;
+}
+
+.previewHeader {
+  display: grid;
+  grid-template-columns: 100px 1fr 80px;
+  gap: $space-3;
+  padding: $space-2 $space-4;
+  background: rgba(255, 249, 240, 0.03);
+  border-bottom: 1px solid $line-soft;
+  font-size: $t-xs;
+  color: $on-dark-faded;
+  letter-spacing: $track-wide;
+  text-transform: uppercase;
+}
+
+.previewRow {
+  display: grid;
+  grid-template-columns: 100px 1fr 80px;
+  gap: $space-3;
+  padding: $space-2_5 $space-4;
+  border-bottom: 1px solid $line-soft;
+  align-items: center;
+
+  &:last-child { border-bottom: none; }
+}
+
+.colRight { text-align: right; }
+
+.previewDate {
+  font-size: $t-xs;
+  color: $on-dark-faded;
+  font-family: $font-mono;
+  letter-spacing: 0.02em;
+}
+
+.previewMerchant {
+  font-size: $t-xs;
+  color: $on-dark-soft;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.previewAmt {
+  font-size: $t-xs;
+  font-family: $font-mono;
+  text-align: right;
+  letter-spacing: 0.02em;
+}
+
+.amtPos { color: $positive-text; }
+.amtNeg { color: $on-dark-soft; }
+
+.previewMore {
+  padding: $space-2 $space-4;
+  font-size: $t-xs;
+  color: $on-dark-faded;
+  text-align: center;
+  border-top: 1px solid $line-soft;
+}
+
+.previewActions {
+  display: flex;
+  gap: $space-3;
+  align-items: center;
+  justify-content: flex-end;
+  padding-top: $space-2;
+}
+
+.backBtn {
+  font-size: $t-xs;
+  color: $on-dark-faded;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  @include transition(color, 180ms, $ease-settle);
+
+  &:hover { color: $on-dark-soft; }
+}
+
+.importBtn {
+  height: 34px;
+  padding: 0 $space-5;
+  border-radius: $radius-sm;
+  border: 1px solid $accent-text;
+  background: rgba(194, 96, 85, 0.08);
+  font-size: $t-xs;
+  color: $accent-text;
+  letter-spacing: $track-wide;
+  cursor: pointer;
+  @include transition(all, 200ms, $ease-settle);
+
+  &:hover {
+    background: rgba(194, 96, 85, 0.14);
+  }
+}
+
+// ── Step 3: Importing ─────────────────────────────────────────────────────────
+.importing {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: $space-4;
+  padding: $space-10 $space-4;
+}
+
+.importingPct {
+  font-size: $t-xl;
+  font-weight: $w-thin;
+  color: $on-dark;
+  font-family: $font-mono;
+  letter-spacing: -0.03em;
+}
+
+.importingText {
+  font-size: $t-xs;
+  color: $on-dark-faded;
+  letter-spacing: $track-wide;
+}
+
+.progressTrack {
+  width: 100%;
+  height: 2px;
+  background: $line-soft;
+  border-radius: $radius-full;
+  overflow: hidden;
+}
+
+.progressFill {
+  height: 100%;
+  background: $accent-text;
+  border-radius: $radius-full;
+  @include transition(width, 300ms, $ease-settle);
+}
+
+// ── Step 4: Done ──────────────────────────────────────────────────────────────
+.done {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: $space-3;
+  padding: $space-10 $space-4;
+  text-align: center;
+}
+
+.doneIcon {
+  font-size: 28px;
+  color: $positive-text;
+  line-height: 1;
+}
+
+.doneTitle {
+  font-size: $t-md;
+  color: $on-dark;
+  font-weight: $w-thin;
+  letter-spacing: $track-snug;
+}
+
+.doneSub {
+  font-size: $t-xs;
+  color: $on-dark-faded;
+  line-height: 1.6;
+}
+
+.doneBtn {
+  margin-top: $space-3;
+  height: 34px;
+  padding: 0 $space-6;
+  border-radius: $radius-sm;
+  border: 1px solid $line-soft;
+  background: transparent;
+  font-size: $t-xs;
+  color: $on-dark-soft;
+  letter-spacing: $track-wide;
+  cursor: pointer;
+  @include transition(all, 200ms, $ease-settle);
+
+  &:hover {
+    background: rgba(255, 249, 240, 0.06);
+    border-color: $line;
+  }
+}

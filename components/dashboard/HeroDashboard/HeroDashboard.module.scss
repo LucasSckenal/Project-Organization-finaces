@@ -1,0 +1,342 @@
+@use '../../../styles/tokens/colors' as *;
+@use '../../../styles/tokens/typography' as *;
+@use '../../../styles/tokens/spacing' as *;
+@use '../../../styles/mixins/animations' as *;
+@use '../../../styles/mixins/glass' as *;
+
+.hero {
+  padding: $s-5 $s-4 $s-6;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+}
+
+// ── Section index — "— 001 —" ─────────────────────────────────────────────────
+.sectionIndex {
+  font-size: $t-xs;
+  color: $on-dark-faded;
+  letter-spacing: $track-mark;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+  margin-bottom: $s-2;
+
+  &::before {
+    content: '—';
+    opacity: 0.4;
+  }
+}
+
+// ── Greeting ──────────────────────────────────────────────────────────────────
+.greeting {
+  margin-bottom: $s-5;
+}
+
+.greetingKanji {
+  font-family: $font-serif;
+  font-size: $t-xs;
+  color: $on-dark-faded;
+  letter-spacing: $track-mark;
+  text-transform: uppercase;
+  margin-bottom: $space-3;
+  display: block;
+  font-weight: $w-light;
+}
+
+.greetingTitle {
+  font-size: $t-display;
+  font-weight: $w-regular;
+  color: $on-dark;
+  letter-spacing: $track-tight;
+  line-height: $lh-tight;
+
+  strong {
+    font-weight: $w-light;
+    color: $accent-night;
+  }
+}
+
+.greetingDate {
+  margin-top: $space-4;
+  font-size: $t-sm;
+  color: $on-dark-mute;
+  letter-spacing: $track-wide;
+  font-weight: $w-regular;
+}
+
+// ── Balance ───────────────────────────────────────────────────────────────────
+.balanceRow {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: end;
+  margin-bottom: $s-4;
+  gap: $s-4;
+}
+
+.balanceMain { display: flex; flex-direction: column; gap: $space-3; }
+
+.balanceLabelRow {
+  display: flex;
+  align-items: center;
+  gap: $space-3;
+}
+
+.autoBadge {
+  font-size: 9px;
+  color: $on-dark-faded;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 2px 7px;
+  border-radius: $radius-full;
+  border: 1px solid $line-soft;
+  background: rgba(255, 249, 240, 0.03);
+  cursor: default;
+}
+
+.balanceLabel {
+  font-size: $t-xs;
+  color: $on-dark-faded;
+  letter-spacing: $track-mark;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+
+  &::before {
+    content: '';
+    display: inline-block;
+    width: 20px;
+    height: 1px;
+    background: $on-dark-faded;
+    opacity: 0.5;
+  }
+}
+
+.balanceAmount {
+  font-size: $t-hero;
+  font-weight: $w-thin;
+  color: $on-dark;
+  letter-spacing: $track-tight;
+  line-height: 0.92;
+  font-variant-numeric: tabular-nums;
+
+  .currency {
+    font-size: 0.38em;
+    color: $on-dark-mute;
+    vertical-align: top;
+    margin-top: 0.35em;
+    font-family: $font-sans;
+    font-weight: $w-regular;
+    margin-right: 0.08em;
+  }
+}
+
+.balanceDelta {
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+  font-size: $t-sm;
+  color: $on-dark-mute;
+}
+
+.deltaPositive { color: $positive-text; display: flex; align-items: center; gap: $space-1; }
+.deltaNegative { color: $negative-text; }
+.deltaArrow    { font-size: 0.75em; }
+.deltaPeriod   { color: $on-dark-faded; font-size: $t-xs; letter-spacing: $track-wide; }
+
+// ── Side mini-stats ────────────────────────────────────────────────────────────
+.balanceSide {
+  display: flex;
+  flex-direction: column;
+  gap: $space-3;
+  min-width: 152px;
+}
+
+.miniStat {
+  @include glass(12px, rgba(26, 24, 22, 0.65), $line-soft);
+  border-radius: $radius-sm;
+  padding: $space-3 $space-4;
+  display: flex;
+  flex-direction: column;
+  gap: $space-1;
+  @include transition(border-color, $dur-fast, $ease-settle);
+
+  &:hover { border-color: $line; }
+}
+
+.miniStatLabelRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: $space-2;
+}
+
+.miniStatLabel {
+  font-size: $t-xs;
+  color: $on-dark-faded;
+  letter-spacing: $track-mark;
+  text-transform: uppercase;
+}
+
+.editCashBtn {
+  font-size: 11px;
+  color: $on-dark-faded;
+  cursor: pointer;
+  opacity: 0;
+  @include transition(opacity, 180ms, $ease-settle);
+
+  &:hover { color: $on-dark-soft; }
+}
+
+.miniStat:hover .editCashBtn { opacity: 0.7; }
+
+.miniStatValue {
+  font-size: $t-sm;
+  color: $on-dark;
+  font-weight: $w-regular;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.01em;
+}
+
+.miniStatChange { font-size: $t-xs; }
+
+// ── Stats strip ────────────────────────────────────────────────────────────────
+.statsStrip {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: $s-3;
+  padding-top: $s-3;
+  border-top: 1px solid $line-soft;
+}
+
+.statItem  { display: flex; flex-direction: column; gap: $space-1_5; }
+
+.statLabel {
+  font-size: $t-xs;
+  color: $on-dark-faded;
+  letter-spacing: $track-mark;
+  text-transform: uppercase;
+}
+
+.statValue {
+  font-size: $t-2xl;
+  font-weight: $w-thin;
+  color: $on-dark;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: $track-snug;
+  line-height: 1;
+}
+
+.statSub {
+  font-size: $t-xs;
+  color: $on-dark-mute;
+}
+
+// ── Mobile ────────────────────────────────────────────────────────────────────
+@media (max-width: 767px) {
+  .hero {
+    padding: $s-3 $space-5 $s-4;
+    min-height: auto;
+    padding-top: $space-8;
+  }
+
+  .greetingTitle {
+    font-size: $t-2xl;
+    letter-spacing: 0;
+  }
+
+  .balanceAmount {
+    font-size: $t-3xl;
+  }
+
+  .balanceRow {
+    grid-template-columns: 1fr;
+    gap: $space-6;
+  }
+
+  .balanceSide {
+    flex-direction: row;
+    min-width: unset;
+    gap: $space-3;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: $space-1;
+
+    // hide scrollbar
+    scrollbar-width: none;
+    &::-webkit-scrollbar { display: none; }
+  }
+
+  .miniStat {
+    flex-shrink: 0;
+    min-width: 130px;
+  }
+
+  .statsStrip {
+    grid-template-columns: repeat(3, 1fr);
+    gap: $space-3;
+  }
+
+  .statValue {
+    font-size: $t-xl;
+  }
+}
+
+// ── Auto breakdown (cash drawer) ───────────────────────────────────────────────
+.autoBreakdown {
+  margin: $space-5 0;
+  padding: $space-4;
+  border: 1px solid $line-soft;
+  border-radius: $radius-md;
+  background: rgba(255, 249, 240, 0.02);
+}
+
+.autoBreakdownTitle {
+  font-size: $t-xs;
+  color: $on-dark-faded;
+  letter-spacing: $track-wide;
+  text-transform: uppercase;
+  margin-bottom: $space-3;
+}
+
+.autoRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: $t-xs;
+  color: $on-dark-mute;
+  padding: $space-1_5 0;
+
+  span:last-child {
+    font-family: $font-mono;
+    color: $on-dark-soft;
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+.autoRowTotal {
+  margin-top: $space-2;
+  padding-top: $space-3;
+  border-top: 1px solid $line-soft;
+  color: $on-dark;
+  font-weight: $w-regular;
+
+  span:last-child {
+    color: $accent-text;
+    font-weight: $w-regular;
+  }
+}
+
+// ── Divider ────────────────────────────────────────────────────────────────────
+.ambientDivider {
+  position: absolute;
+  bottom: $s-4;
+  left: $s-4;
+  right: $s-4;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, $line-soft 30%, $line 50%, $line-soft 70%, transparent);
+  pointer-events: none;
+}

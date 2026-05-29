@@ -1,0 +1,544 @@
+@use '../../../styles/tokens/colors' as *;
+@use '../../../styles/tokens/typography' as *;
+@use '../../../styles/tokens/spacing' as *;
+@use '../../../styles/mixins/animations' as *;
+@use '../../../styles/mixins/glass' as *;
+
+// ── Page wrapper — fills the full content area, no extra scroll ───────────────
+.page {
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - #{$topbar-height});
+  padding: 0 $space-8 $space-6;
+  overflow: hidden;   // the grid handles its own scroll if needed
+}
+
+// ── Page header — compact, fixed height ───────────────────────────────────────
+.pageHeader {
+  display: flex;
+  flex-direction: column;
+  gap: $space-1_5;
+  padding: $space-6 0 $space-5;
+  flex-shrink: 0;
+}
+
+.pageTag {
+  font-size: $t-xs;
+  color: $on-dark-faded;
+  letter-spacing: $track-mark;
+  text-transform: uppercase;
+}
+
+.pageTitle {
+  font-size: $t-xl;
+  font-weight: $w-thin;
+  color: $on-dark;
+  letter-spacing: $track-snug;
+  line-height: $lh-tight;
+}
+
+// ── Two-column grid ───────────────────────────────────────────────────────────
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: $space-4;
+  flex: 1;
+  min-height: 0;          // allow the grid to shrink inside flex
+  overflow-y: auto;       // allow internal scroll if viewport is very short
+  scrollbar-width: none;
+  &::-webkit-scrollbar { display: none; }
+}
+
+.col {
+  display: flex;
+  flex-direction: column;
+  gap: $space-4;
+  min-height: 0;
+}
+
+// ── Card ──────────────────────────────────────────────────────────────────────
+.card {
+  @include glass-card;
+  padding: $space-5 $space-6;
+}
+
+.cardTitle {
+  font-size: $t-xs;
+  color: $on-dark-faded;
+  letter-spacing: $track-mark;
+  text-transform: uppercase;
+  margin-bottom: $space-4;
+  padding-bottom: $space-3;
+  border-bottom: 1px solid $line-soft;
+}
+
+.cardSubtitle {
+  font-size: $t-xs;
+  color: $on-dark-faded;
+  line-height: 1.6;
+  margin-bottom: $space-4;
+  font-weight: $w-light;
+}
+
+// ── Category chips ────────────────────────────────────────────────────────────
+.catChips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $space-2;
+  margin-bottom: $space-4;
+}
+
+.catChip {
+  display: inline-flex;
+  align-items: center;
+  gap: $space-1_5;
+  height: 26px;
+  padding: 0 $space-3;
+  border-radius: $radius-full;
+  font-size: $t-xs;
+  letter-spacing: 0.01em;
+  border: 1px solid $line-soft;
+}
+
+.catChipDefault {
+  color: $on-dark-faded;
+  background: rgba(255, 249, 240, 0.02);
+}
+
+.catChipCustom {
+  color: $on-dark-soft;
+  background: rgba(140, 42, 31, 0.08);
+  border-color: rgba(194, 96, 85, 0.25);
+  padding-right: $space-1_5;
+}
+
+.catChipRemove {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: transparent;
+  color: $on-dark-faded;
+  font-size: 8px;
+  cursor: pointer;
+  @include transition(all, 150ms, $ease-settle);
+
+  &:hover { background: rgba(139, 58, 58, 0.2); color: $negative-text; }
+}
+
+// ── Profile row ───────────────────────────────────────────────────────────────
+.profileRow {
+  display: flex;
+  align-items: center;
+  gap: $space-4;
+}
+
+.avatar {
+  position: relative;
+  width: 56px;
+  height: 56px;
+  border-radius: $radius-full;
+  background: linear-gradient(135deg, rgba(140, 42, 31, 0.35), rgba(232, 154, 79, 0.25));
+  border: 1px solid $line;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  overflow: hidden;
+  cursor: pointer;
+  padding: 0;
+  @include transition(border-color, $dur-fast, $ease-settle);
+
+  &:hover {
+    border-color: $accent-text;
+    .avatarOverlay { opacity: 1; }
+  }
+}
+
+.avatarUploading { opacity: 0.6; pointer-events: none; }
+
+.avatarImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: $radius-full;
+  display: block;
+}
+
+.avatarInitial {
+  font-size: $t-lg;
+  color: $on-dark;
+  line-height: 1;
+  user-select: none;
+}
+
+.avatarOverlay {
+  position: absolute;
+  inset: 0;
+  border-radius: $radius-full;
+  background: rgba(0, 0, 0, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  @include transition(opacity, $dur-fast, $ease-settle);
+}
+
+.cameraIcon { font-size: 16px; color: $on-dark; line-height: 1; }
+.fileInput  { display: none; }
+
+.profileMeta {
+  display: flex;
+  flex-direction: column;
+  gap: $space-1;
+  min-width: 0;
+}
+
+.profileName {
+  font-size: $t-base;
+  font-weight: $w-light;
+  color: $on-dark;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.profileEmail {
+  font-size: $t-xs;
+  color: $on-dark-mute;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.profileSince {
+  font-size: $t-xs;
+  color: $on-dark-faded;
+  letter-spacing: $track-wide;
+  margin-top: $space-1;
+}
+
+// ── Preferences ───────────────────────────────────────────────────────────────
+.prefGroup {
+  display: flex;
+  flex-direction: column;
+  gap: $space-3;
+}
+
+.prefHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.prefLabel {
+  font-size: $t-sm;
+  color: $on-dark-soft;
+  font-weight: $w-light;
+}
+
+.prefValue {
+  font-size: $t-xs;
+  color: $on-dark-faded;
+  letter-spacing: $track-wide;
+  font-family: $font-mono;
+}
+
+.prefDivider {
+  height: 1px;
+  background: $line-soft;
+  margin: $space-4 0;
+}
+
+.prefNote {
+  margin-top: $space-3;
+  font-size: $t-xs;
+  color: $on-dark-faded;
+  line-height: 1.55;
+  font-weight: $w-light;
+}
+
+// ── Currency convert panel ────────────────────────────────────────────────────
+.convertPanel {
+  margin-top: $space-3;
+  padding: $space-4;
+  border: 1px solid rgba(232, 154, 79, 0.22);
+  border-radius: $radius-md;
+  background: rgba(232, 154, 79, 0.06);
+}
+
+.convertText {
+  font-size: $t-xs;
+  color: $on-dark-soft;
+  line-height: 1.55;
+  margin-bottom: $space-3;
+
+  strong { color: $accent-night-text; font-weight: $w-regular; }
+}
+
+.convertActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $space-2;
+}
+
+.convertPrimary {
+  height: 30px;
+  padding: 0 $space-4;
+  border-radius: $radius-sm;
+  border: 1px solid rgba(232, 154, 79, 0.4);
+  background: rgba(232, 154, 79, 0.14);
+  font-size: $t-xs;
+  color: $accent-night-text;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  @include transition(all, 160ms, $ease-settle);
+  &:hover:not(:disabled) { background: rgba(232, 154, 79, 0.22); }
+  &:disabled { opacity: 0.6; cursor: default; }
+}
+
+.convertGhost {
+  height: 30px;
+  padding: 0 $space-3;
+  border-radius: $radius-sm;
+  border: 1px solid $line-soft;
+  background: transparent;
+  font-size: $t-xs;
+  color: $on-dark-soft;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  @include transition(all, 160ms, $ease-settle);
+  &:hover:not(:disabled) { background: rgba(255, 249, 240, 0.06); border-color: $line; }
+  &:disabled { opacity: 0.6; cursor: default; }
+}
+
+.convertCancel {
+  height: 30px;
+  padding: 0 $space-3;
+  background: transparent;
+  font-size: $t-xs;
+  color: $on-dark-faded;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  @include transition(color, 160ms, $ease-settle);
+  &:hover:not(:disabled) { color: $on-dark-soft; }
+  &:disabled { opacity: 0.6; cursor: default; }
+}
+
+// Currency — 5-button grid (3+2 on narrower)
+.toggleGrid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: $space-2;
+}
+
+// Language — row
+.toggleRow {
+  display: flex;
+  gap: $space-2;
+}
+
+.toggleBtn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  height: 48px;
+  border-radius: $radius-sm;
+  border: 1px solid $line-soft;
+  background: rgba(255, 249, 240, 0.02);
+  cursor: pointer;
+  @include transition(all, 180ms, $ease-settle);
+
+  &:hover {
+    border-color: $line;
+    background: rgba(255, 249, 240, 0.05);
+  }
+}
+
+.toggleBtnActive {
+  border-color: rgba(140, 42, 31, 0.40);
+  background: rgba(140, 42, 31, 0.10);
+
+  .toggleSymbol,
+  .toggleCode { color: $accent-text; }
+
+  &:hover { border-color: rgba(140, 42, 31, 0.55); }
+}
+
+.toggleSymbol {
+  font-size: $t-base;
+  color: $on-dark-soft;
+  font-family: $font-mono;
+  line-height: 1;
+}
+
+.toggleCode {
+  font-size: 9px;
+  color: $on-dark-faded;
+  letter-spacing: $track-mark;
+  font-family: $font-mono;
+}
+
+// Language toggles — text-only, horizontal
+.toggleRow .toggleBtn {
+  flex: 1;
+  flex-direction: row;
+  height: 38px;
+  font-size: $t-sm;
+  color: $on-dark-mute;
+  letter-spacing: 0.02em;
+  gap: 0;
+  font-family: $font-sans;
+
+  &.toggleBtnActive { color: $accent-text; }
+}
+
+// ── Account form ──────────────────────────────────────────────────────────────
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: $space-2;
+  margin-bottom: $space-4;
+
+  &:last-of-type { margin-bottom: 0; }
+}
+
+.formLabel {
+  font-size: 10px;
+  color: $on-dark-faded;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.inputRow {
+  display: flex;
+  gap: $space-2;
+}
+
+.input {
+  flex: 1;
+  height: 38px;
+  background: rgba(255, 249, 240, 0.04);
+  border: 1px solid $line-soft;
+  border-radius: $radius-sm;
+  padding: 0 $space-4;
+  font-size: $t-sm;
+  color: $on-dark;
+  outline: none;
+  font-family: $font-sans;
+  @include transition(border-color, 180ms, $ease-settle);
+
+  &:focus        { border-color: $line; }
+  &::placeholder { color: $on-dark-faded; }
+}
+
+.inputReadonly {
+  opacity: 0.45;
+  cursor: not-allowed;
+  user-select: none;
+}
+
+.saveBtn {
+  height: 38px;
+  padding: 0 $space-4;
+  border-radius: $radius-sm;
+  border: 1px solid $line;
+  background: rgba(255, 249, 240, 0.06);
+  font-size: $t-xs;
+  color: $on-dark;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  white-space: nowrap;
+  font-family: $font-sans;
+  @include transition(all, 200ms, $ease-settle);
+
+  &:hover:not(:disabled) { background: rgba(255, 249, 240, 0.10); border-color: $line-bright; }
+  &:disabled             { opacity: 0.35; cursor: not-allowed; }
+}
+
+.saveBtnSaved {
+  border-color: rgba(74, 124, 89, 0.45);
+  background: rgba(74, 124, 89, 0.12);
+  color: $positive-text;
+}
+
+// ── Danger zone ───────────────────────────────────────────────────────────────
+.dangerZone {
+  margin-top: $space-4;
+  padding-top: $space-4;
+  border-top: 1px solid $line-soft;
+}
+
+.exportBtn {
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+  height: 34px;
+  padding: 0 $space-4;
+  border-radius: $radius-sm;
+  border: 1px solid $line-soft;
+  background: rgba(255, 249, 240, 0.03);
+  font-size: $t-xs;
+  color: $on-dark-soft;
+  letter-spacing: $track-wide;
+  cursor: pointer;
+  font-family: $font-sans;
+  @include transition(all, 180ms, $ease-settle);
+
+  span { color: $accent-text; }
+
+  &:hover:not(:disabled) {
+    border-color: $line;
+    background: rgba(255, 249, 240, 0.06);
+  }
+  &:disabled { opacity: 0.6; cursor: default; }
+}
+
+.signOutBtn {
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+  height: 34px;
+  padding: 0 $space-4;
+  border-radius: $radius-sm;
+  border: 1px solid $line-soft;
+  background: transparent;
+  font-size: $t-xs;
+  color: $on-dark-faded;
+  letter-spacing: $track-wide;
+  cursor: pointer;
+  font-family: $font-sans;
+  @include transition(all, 180ms, $ease-settle);
+
+  &:hover {
+    border-color: rgba(139, 58, 58, 0.4);
+    background: rgba(139, 58, 58, 0.08);
+    color: $negative-text;
+  }
+}
+
+// ── Mobile — single column ────────────────────────────────────────────────────
+@media (max-width: 767px) {
+  .page {
+    padding: $space-5;
+    padding-top: 0;
+    height: auto;
+    overflow: visible;
+  }
+
+  .pageHeader { padding: $space-5 0 $space-4; }
+
+  .grid {
+    grid-template-columns: 1fr;
+    overflow-y: visible;
+  }
+
+  .toggleGrid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}

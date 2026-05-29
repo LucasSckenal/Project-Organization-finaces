@@ -1,0 +1,11 @@
+{
+  "name": "ma-finance-functions",
+  "description": "Scheduled Cloud Functions for Ma Finance OS",
+  "main": "index.js",
+  "engines": { "node": "20" },
+  "dependencies": {
+    "firebase-admin": "^12.0.0",
+    "firebase-functions": "^5.0.0"
+  },
+  "private": true
+}
